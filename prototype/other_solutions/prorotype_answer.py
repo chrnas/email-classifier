@@ -36,6 +36,7 @@ y_pred = classifier.predict(X_test)
 # Result Display
 p_result = pd.DataFrame(classifier.predict_proba(X_test))
 p_result.columns = classifier.classes_
+print(y_pred)
 print(p_result)
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
