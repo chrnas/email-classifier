@@ -28,10 +28,10 @@ def de_duplication(df):
     df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
     return df
 
+def noise_remover(df):
+    # Add noise removing code
+    return df
 
-
-
-# Data preparation
-from sklearn.model_selection import train_test_split
-y = temp.y.to_numpy()
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+def translate_to_en(df):
+    # Add translation code
+    return df
