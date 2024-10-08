@@ -5,7 +5,6 @@ from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
 
 def trans_to_en(texts):
-    
     t2t_m = "facebook/m2m100_418M"
     t2t_pipe = pipeline(task='text2text-generation', model=t2t_m)
 

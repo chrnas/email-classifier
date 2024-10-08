@@ -2,6 +2,7 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 
+
 # Text representation in Numeric Form
 def get_tfidf_embd(df):
     tfidfconverter = TfidfVectorizer(max_features=2000, min_df=4, max_df=0.90)

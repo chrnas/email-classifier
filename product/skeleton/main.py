@@ -20,10 +20,11 @@ def load_data():
 def preprocess_data(df):
     # De-duplicate input data
     df = de_duplication(df)
+    # translate data to english
+    
+    df = translate_to_en(df)
     # remove noise in input data
     df = noise_remover(df)
-    # translate data to english
-    df = translate_to_en(df)
     return df
 
 
@@ -46,10 +47,11 @@ if __name__ == '__main__':
     df = load_data()
     df = preprocess_data(df)
     df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
-    df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')    
+    df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
     # data transformation
     X, group_df = get_embeddings(df)
     # data modelling
     data = get_data_object(X, df)
     # modelling
     perform_modelling(data, df, 'name')
+    
