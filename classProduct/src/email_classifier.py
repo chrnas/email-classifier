@@ -14,6 +14,9 @@ class EmailClassifier():
         self.df = None
         self.data = None
 
+    def getModel(self):
+        return self.model
+
     def classify_email(self, email: str) -> str:
         # This method will classify the email using the model, no idea how this will be used
         classification = self.model.use_model(email)
@@ -28,3 +31,9 @@ class EmailClassifier():
         self.data = TrainingData(X, self.df)
         self.model = RandomForest(
             'RandomForest', self.data.get_X_test(), self.data.get_type())
+        self.model.train(self.data)
+        self.model.predict(self.data)
+    
+    def printModelEvaluation(self):
+        self.model.print_results(self.data)
+        
