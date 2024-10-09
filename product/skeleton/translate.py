@@ -59,3 +59,45 @@ def trans_to_en(texts):
 # Note that the we can only translate a limited number of words so we are only translating ticket summary and not interaction content
 
 #temp["ts_en"] = trans_to_en(temp["ts"].to_list())
+
+def trans_to_eng(texts):
+    t2t_m = "facebook/m2m100_418M"
+    t2t_pipe = pipeline(task='text2text-generation', model=t2t_m)
+
+    model = M2M100ForConditionalGeneration.from_pretrained(t2t_m)
+    tokenizer = M2M100Tokenizer.from_pretrained(t2t_m)
+    nlp_stanza = stanza.Pipeline(lang="multilingual", processors="langid",
+                                download_method=DownloadMethod.REUSE_RESOURCES)
+
+    text_en_l = []
+    for text in texts:
+        if text == "":
+            text_en_l.append(text)
+            continue
+
+        doc = nlp_stanza(text)
+        print(doc.lang)
+        
+        if doc.lang == "en":
+            text_en_l.append(text)
+        else:
+            lang = doc.lang
+
+            # Map special cases to a supported language
+            lang_mappings = {
+                "fro": "fr",  # Old French
+                "la": "it",   # Latin
+                "nn": "no",   # Norwegian (Nynorsk)
+                "kmr": "tr"   # Kurmanji
+            }
+            lang = lang_mappings.get(lang, lang)  # Map to the supported language or keep original
+
+            # Translate text to English
+            tokenizer.src_lang = lang
+            encoded_text = tokenizer(text, return_tensors="pt")
+            generated_tokens = model.generate(**encoded_text, forced_bos_token_id=tokenizer.get_lang_id("en"))
+            text_en = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+            
+            text_en_l.append(text_en)
+
+    return text_en_l

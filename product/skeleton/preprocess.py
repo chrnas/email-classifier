@@ -2,6 +2,10 @@
 import pandas as pd
 from translate import trans_to_en
 from Config import Config
+import stanza
+from stanza.pipeline.core import DownloadMethod
+from transformers import pipeline
+from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 
 
 def get_input_data():
@@ -93,3 +97,47 @@ def noise_remover(df):
 def translate_to_en(df):
     df[Config.TICKET_SUMMARY] = trans_to_en(df[Config.TICKET_SUMMARY].to_list())
     return df
+
+def translate_to_english(texts):
+    t2t_m = "facebook/m2m100_418M"
+    t2t_pipe = pipeline(task='text2text-generation', model=t2t_m)
+
+    model = M2M100ForConditionalGeneration.from_pretrained(t2t_m)
+    tokenizer = M2M100Tokenizer.from_pretrained(t2t_m)
+    nlp_stanza = stanza.Pipeline(lang="multilingual", processors="langid",
+                                download_method=DownloadMethod.REUSE_RESOURCES)
+
+    text_en_l = []
+    for text in texts:
+        if text == "":
+            text_en_l.append(text)
+            continue
+
+        doc = nlp_stanza(text)
+        print(doc.lang)
+        
+        if doc.lang == "en":
+            text_en_l.append(text)
+        else:
+            lang = doc.lang
+
+            # Map special cases to a supported language
+            lang_mappings = {
+                "fro": "fr",  # Old French
+                "la": "it",   # Latin
+                "nn": "no",   # Norwegian (Nynorsk)
+                "kmr": "tr"   # Kurmanji
+            }
+            lang = lang_mappings.get(lang, lang)  # Map to the supported language or keep original
+
+            # Translate text to English
+            tokenizer.src_lang = lang
+            encoded_text = tokenizer(text, return_tensors="pt")
+            generated_tokens = model.generate(**encoded_text, forced_bos_token_id=tokenizer.get_lang_id("en"))
+            text_en = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]
+            
+            text_en_l.append(text_en)
+
+            print(text)
+            print(text_en)
+    return text_en_l

@@ -1,7 +1,7 @@
 #This is a main file: The controller. All methods will directly on directly be called here
 import numpy as np
 import pandas as pd
-from preprocess import get_input_data, de_duplication, noise_remover, translate_to_en
+from preprocess import get_input_data, de_duplication, noise_remover, translate_to_english
 from Config import Config
 from embeddings import get_tfidf_embd
 from modelling.modelling import model_predict
@@ -21,10 +21,10 @@ def preprocess_data(df):
     # De-duplicate input data
     df = de_duplication(df)
     # translate data to english
-    
-    df = translate_to_en(df)
+    df[Config.TICKET_SUMMARY] = translate_to_english(df[Config.TICKET_SUMMARY].to_list())
+    #df = translate_to_en(df)
     # remove noise in input data
-    df = noise_remover(df)
+    #df = noise_remover(df)
     return df
 
 
