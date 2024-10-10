@@ -4,7 +4,7 @@ from config import Config
 import stanza
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-
+from tqdm import tqdm
 
 class DataProcessor():
 
@@ -73,7 +73,7 @@ class DataProcessor():
             "[^0-9a-zA-Z]+",
             "(\s|^).(\s|$)"]
         for noise in noise_1:
-            print(noise)
+            # print(noise)
             temp["ic"] = temp["ic"].replace(noise, " ", regex=True)
         temp["ic"] = temp["ic"].replace(r'\s+', ' ', regex=True).str.strip()
         # temp_debug = temp.loc[:, ["Interaction content", "ic", "y"]]
@@ -94,13 +94,13 @@ class DataProcessor():
                                      download_method=DownloadMethod.REUSE_RESOURCES)
 
         text_en_l = []
-        for text in texts:
+        for text in tqdm(texts, desc="Translating", unit="text"):
             if text == "":
                 text_en_l = text_en_l + [text]
                 continue
 
             doc = nlp_stanza(text)
-            print(doc.lang)
+            # print(doc.lang)
             if doc.lang == "en":
                 text_en_l = text_en_l + [text]
             else:
@@ -126,6 +126,10 @@ class DataProcessor():
 
         df[Config.TICKET_SUMMARY] = text_en_l
         self.df = df
-        
-    def data_preprocessor():
-        pass
+    
+    def convert_to_unicode(self):
+        """Converts the interaction content and ticket summary to unicode."""
+        df = self.df
+        df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
+        df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
+        self.df = df
