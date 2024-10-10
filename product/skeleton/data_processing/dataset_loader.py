@@ -1,7 +1,7 @@
 import pandas as pd
 
 class DatasetLoader():
-    def get_input_data(path): # "./data/AppGallery.csv"
+    def get_input_data(self, path):
         """This method will return the data from the given path as a pandas dataframe."""
         df = pd.read_csv(path)
 

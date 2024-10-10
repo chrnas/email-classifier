@@ -136,6 +136,13 @@ class DataProcessor():
 
         df[Config.TICKET_SUMMARY] = text_en_l
         self.df = df
+
+    def convert_to_unicode(self):
+        """Converts the interaction content and ticket summary to unicode."""
+        df = self.df
+        df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
+        df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
+        self.df = df
     
     def create_tfidf_embd(self):
         """Converts text data from "Interaction content" and "Ticket Summary" columns into TF-IDF feature vectors, then concatenates them into a single feature matrix."""

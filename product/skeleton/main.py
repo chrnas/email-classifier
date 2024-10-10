@@ -7,6 +7,9 @@ from embeddings import get_tfidf_embd
 from modelling.modelling import model_predict
 from modelling.data_model import Data
 import random
+from data_processing.dataset_loader import DatasetLoader
+from data_processing.preprocessing import DataProcessor
+
 seed = 0
 random.seed(seed)
 np.random.seed(seed)
@@ -43,15 +46,26 @@ def perform_modelling(data: Data, df: pd.DataFrame, name):
 
 # Code will start executing from following line
 if __name__ == '__main__':
-    # pre-processing steps
-    df = load_data()
-    df = preprocess_data(df)
-    df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
-    df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
-    # data transformation
-    X, group_df = get_embeddings(df)
+    # load the data
+    dataset_loader = DatasetLoader()
+    df = dataset_loader.get_input_data("./data/AppGallery.csv")
+    
+    # preproccess the data
+    dataset_processor = DataProcessor(df)
+    dataset_processor.de_duplication()
+    #dataset_processor.translate_to_en()
+    dataset_processor.noise_remover()
+    dataset_processor.convert_to_unicode()
+
+    # feature engineering
+    dataset_processor.create_tfidf_embd()
+
+    X = dataset_processor.get_tfidf_embd()
+    df = dataset_processor.get_df()
+
     # data modelling
     data = get_data_object(X, df)
+
     # modelling
     perform_modelling(data, df, 'name')
     
