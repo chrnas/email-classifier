@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+
 class FeatureEngineer():
         def __init__(self,
                  df: pd.DataFrame) -> None:

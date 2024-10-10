@@ -126,3 +126,6 @@ class DataProcessor():
 
         df[Config.TICKET_SUMMARY] = text_en_l
         self.df = df
+        
+    def data_preprocessor():
+        pass

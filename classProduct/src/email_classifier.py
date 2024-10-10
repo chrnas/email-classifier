@@ -1,8 +1,8 @@
-from DataPreparation.preprocessing import DataProcessor
-from DataPreparation.dataset_loader import DatasetLoader
-from FeatureEngineering.feature_engineering import FeatureEngineer
+from data_preparation.data_processor import DataProcessor
+from data_preparation.dataset_loader import DatasetLoader
+from feature_engineering.feature_engineering import FeatureEngineer
 from training_data import TrainingData
-from Models.randomforest import RandomForest
+from models.randomforest import RandomForest
 import pandas as pd
 
 
@@ -32,11 +32,11 @@ class EmailClassifier():
 
         # preproccess the data
         self.data_processor = DataProcessor(self.df)
-        self.dataset_processor.de_duplication()
-        self.dataset_processor.translate_to_en()
-        self.dataset_processor.noise_remover()
-        self.dataset_processor.convert_to_unicode()
-        self.df = self.dataset_processor.get_df()
+        self.data_processor.de_duplication()
+        self.data_processor.translate_to_en()
+        self.data_processor.noise_remover()
+        self.data_processor.convert_to_unicode()
+        self.df = self.data_processor.get_df()
 
         # feature engineering
         self.feature_engineer = FeatureEngineer(self.df)
