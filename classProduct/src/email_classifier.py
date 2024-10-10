@@ -2,17 +2,18 @@ from preprocessing import DataProcessor
 from dataset_loader import DatasetLoader
 from training_data import TrainingData
 from randomforest import RandomForest
+import pandas as pd
 
 
 class EmailClassifier():
 
     def __init__(self) -> None:
 
-        self.data_processor = None
-        self.data_set_loader = DatasetLoader()
-        self.model = None
-        self.df = None
-        self.data = None
+        self.data_processor: DataProcessor = None
+        self.data_set_loader: DatasetLoader = DatasetLoader()
+        self.model: RandomForest = None
+        self.df: pd.DataFrame = None
+        self.data: TrainingData = None
 
     def getModel(self):
         return self.model
@@ -24,7 +25,8 @@ class EmailClassifier():
         return classification
 
     def train_model(self, path: str) -> None:
-        self.df = self.data_set_loader.get_input_data(path)
+        self.df = self.data_set_loader.read_data(path)
+        self.df = self.data_set_loader.renameColumns(self.df)
         self.data_processor = DataProcessor(self.df)
         self.data_processor.create_tfidf_embd()
         X = self.data_processor.get_tfidf_embd()
@@ -33,7 +35,6 @@ class EmailClassifier():
             'RandomForest', self.data.get_X_test(), self.data.get_type())
         self.model.train(self.data)
         self.model.predict(self.data)
-    
+
     def printModelEvaluation(self):
         self.model.print_results(self.data)
-        

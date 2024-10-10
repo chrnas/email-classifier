@@ -12,8 +12,8 @@ class DataProcessor():
 
     def __init__(self,
                  df: pd.DataFrame) -> None:
-        self.df = df
-        self.X = None
+        self.df: pd.DataFrame = df
+        self.X: list = None
 
     def get_df(self):
         return self.df

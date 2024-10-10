@@ -2,9 +2,13 @@ import pandas as pd
 
 
 class DatasetLoader():
-    def get_input_data(self, path: str):  # "./data/AppGallery.csv"
+
+    def read_data(self, path: str) -> pd.DataFrame:
         """This method will return the data from the given path as a pandas dataframe."""
         df = pd.read_csv(path)
+        return df
+
+    def renameColumns(self, df: pd.DataFrame):  # "./data/AppGallery.csv"
 
         # convert the dtype object to unicode string
         df['Interaction content'] = df['Interaction content'].values.astype(
