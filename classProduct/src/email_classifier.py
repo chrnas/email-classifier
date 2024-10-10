@@ -34,7 +34,7 @@ class EmailClassifier():
         self.data_processor = DataProcessor(self.df)
         self.data_processor.de_duplication()
         self.data_processor.translate_to_en()
-        self.data_processor.noise_remover()
+        self.data_processor.remove_noise()
         self.data_processor.convert_to_unicode()
         self.df = self.data_processor.get_df()
 
