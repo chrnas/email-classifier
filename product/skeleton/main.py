@@ -9,6 +9,7 @@ from modelling.data_model import Data
 import random
 from data_processing.dataset_loader import DatasetLoader
 from data_processing.preprocessing import DataProcessor
+from data_processing.feature_engineering import FeatureEngineer
 
 seed = 0
 random.seed(seed)
@@ -56,12 +57,12 @@ if __name__ == '__main__':
     dataset_processor.translate_to_en()
     dataset_processor.noise_remover()
     dataset_processor.convert_to_unicode()
+    df = dataset_processor.get_df()
 
     # feature engineering
-    dataset_processor.create_tfidf_embd()
-
-    X = dataset_processor.get_tfidf_embd()
-    df = dataset_processor.get_df()
+    feature_engineer = FeatureEngineer(df)
+    feature_engineer.create_tfidf_embd()
+    X = feature_engineer.get_tfidf_embd()
 
     # data modelling
     data = get_data_object(X, df)
