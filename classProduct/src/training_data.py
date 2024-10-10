@@ -27,10 +27,10 @@ class TrainingData():
     def get_X_test(self):
         return self.X_test
 
-    def get_type_y_train(self):
+    def get_y_train(self):
         return self.y_train
 
-    def get_type_y_test(self):
+    def get_y_test(self):
         return self.y_test
     '''
     def get_train_df(self):

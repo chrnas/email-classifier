@@ -28,7 +28,7 @@ class RandomForest(BaseModel):
         self.data_transform()
 
     def train(self, data) -> None:
-        self.mdl = self.mdl.fit(data.X_train, data.get_type_y_train())
+        self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
 
     def predict(self, data) -> None:
         predictions = self.mdl.predict(data.get_X_test())
