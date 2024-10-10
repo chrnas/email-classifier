@@ -53,7 +53,7 @@ if __name__ == '__main__':
     # preproccess the data
     dataset_processor = DataProcessor(df)
     dataset_processor.de_duplication()
-    #dataset_processor.translate_to_en()
+    dataset_processor.translate_to_en()
     dataset_processor.noise_remover()
     dataset_processor.convert_to_unicode()
 

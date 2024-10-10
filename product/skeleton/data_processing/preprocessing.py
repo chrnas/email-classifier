@@ -7,6 +7,7 @@ from stanza.pipeline.core import DownloadMethod
 from transformers import pipeline
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 from sklearn.feature_extraction.text import TfidfVectorizer
+from tqdm import tqdm
 
 class DataProcessor():
     def __init__(self,
@@ -73,7 +74,7 @@ class DataProcessor():
             "[^0-9a-zA-Z]+",
             "(\s|^).(\s|$)"]
         for noise in noise_1:
-            print(noise)
+            # print(noise)
             temp["ic"] = temp["ic"].replace(noise, " ", regex=True)
         temp["ic"] = temp["ic"].replace(r'\s+', ' ', regex=True).str.strip()
         temp_debug = temp.loc[:, ["Interaction content", "ic", "y"]]
@@ -95,13 +96,13 @@ class DataProcessor():
                                     download_method=DownloadMethod.REUSE_RESOURCES)
 
         text_en_l = []
-        for text in texts:
+        for text in tqdm(texts, desc="Translating", unit="text"):
             if text == "":
                 text_en_l = text_en_l + [text]
                 continue
 
             doc = nlp_stanza(text)
-            print(doc.lang)
+            # print(doc.lang)
             if doc.lang == "en":
                 text_en_l = text_en_l + [text]
             else:
@@ -131,8 +132,8 @@ class DataProcessor():
 
                 text_en_l = text_en_l + [text_en]
 
-                print(text)
-                print(text_en)
+                # print(text)
+                # print(text_en)
 
         df[Config.TICKET_SUMMARY] = text_en_l
         self.df = df
