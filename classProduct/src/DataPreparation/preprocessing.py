@@ -1,11 +1,9 @@
 # Methods related to data loading and all pre-processing steps will go here
 import pandas as pd
-import numpy as np
 from config import Config
 import stanza
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 
 class DataProcessor():
@@ -128,17 +126,3 @@ class DataProcessor():
 
         df[Config.TICKET_SUMMARY] = text_en_l
         self.df = df
-
-    def create_tfidf_embd(self):
-        """Converts text data from "Interaction content" and "Ticket Summary" columns into TF-IDF feature vectors, then concatenates them into a single feature matrix."""
-        df = self.df
-        tfidfconverter = TfidfVectorizer(
-            max_features=2000, min_df=4, max_df=0.90)
-        x1 = tfidfconverter.fit_transform(df["Interaction content"]).toarray()
-        x2 = tfidfconverter.fit_transform(df["Ticket Summary"]).toarray()
-        X = np.concatenate((x1, x2), axis=1)
-        self.X = X
-
-    def get_tfidf_embd(self):
-        """Returns the combined matrix as a NumPy array."""
-        return self.X
