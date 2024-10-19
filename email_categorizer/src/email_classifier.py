@@ -1,6 +1,9 @@
 from data_preparation.data_processor import DataProcessor
 from data_preparation.dataset_loader import DatasetLoader
-from feature_engineering.feature_engineering import FeatureEngineer
+from feature_engineering.base_embeddings import BaseEmbeddings
+from feature_engineering.tfidf import TfidfEmbeddings
+from feature_engineering.word2vec import Word2VecEmbeddings
+from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
 from training_data import TrainingData
 from models.randomforest import RandomForest
 import pandas as pd
@@ -11,7 +14,7 @@ class EmailClassifier():
     def __init__(self) -> None:
         self.data_set_loader: DatasetLoader = DatasetLoader()
         self.data_processor: DataProcessor = None
-        self.feature_engineer: FeatureEngineer = None
+        self.base_embeddings: BaseEmbeddings = None
         self.model: RandomForest = None
         self.df: pd.DataFrame = None
         self.data: TrainingData = None
@@ -39,9 +42,10 @@ class EmailClassifier():
         self.df = self.data_processor.get_df()
 
         # feature engineering
-        self.feature_engineer = FeatureEngineer(self.df)
-        self.feature_engineer.create_tfidf_embd()
-        X = self.feature_engineer.get_tfidf_embd()
+        BaseEmbeddings
+        self.base_embeddings = SentenceTransformerEmbeddings(self.df)
+        self.base_embeddings.create_embeddings()
+        X = self.base_embeddings.get_embeddings()
 
         # modelling
         self.data = TrainingData(X, self.df)
