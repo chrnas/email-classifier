@@ -22,7 +22,7 @@ class DataProcessor():
         df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
         self.df = df
 
-    def noise_remover(self):
+    def remove_noise(self):
         # Add noise removing code
         temp = self.df
         noise = "(sv\s*:)|(wg\s*:)|(ynt\s*:)|(fw(d)?\s*:)|(r\s*:)|(re\s*:)|(\[|\])|(aspiegel support issue submit)|(null)|(nan)|((bonus place my )?support.pt 自动回复:)"
