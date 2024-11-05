@@ -1,4 +1,4 @@
-# Methods related to data loading and all pre-processing steps will go here
+from abc import ABC, abstractmethod
 import pandas as pd
 from config import Config
 import stanza
@@ -6,31 +6,53 @@ from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 from tqdm import tqdm
 
-class DataProcessor():
-
-    def __init__(self,
-                 df: pd.DataFrame) -> None:
-        self.df: pd.DataFrame = df
-        self.X: list = None
-
-    def get_df(self):
-        return self.df
-
-    def de_duplication(self):
-        df = self.df
-        # remove empty y values
-        df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
+# Base class for Data Processor
+class DataProcessorBase(ABC):
+    def __init__(self, df: pd.DataFrame):
+        """Initialize the base data processor with a DataFrame."""
         self.df = df
 
-    def remove_noise(self):
-        # Add noise removing code
-        temp = self.df
-        noise = "(sv\s*:)|(wg\s*:)|(ynt\s*:)|(fw(d)?\s*:)|(r\s*:)|(re\s*:)|(\[|\])|(aspiegel support issue submit)|(null)|(nan)|((bonus place my )?support.pt 自动回复:)"
-        temp["ts"] = temp["Ticket Summary"].str.lower().replace(noise, " ", regex=True).replace(r'\s+', ' ',
-                                                                                                regex=True).str.strip()
-        # temp_debug = temp.loc[:, ["Ticket Summary", "ts", "y"]]
+    @abstractmethod
+    def process(self):
+        """Process the DataFrame and return the processed result."""
+        ...
 
-        temp["ic"] = temp["Interaction content"].str.lower()
+# Concrete Data Processor
+class DataProcessor(DataProcessorBase):
+    def process(self):
+        """Return the DataFrame as is (no processing)."""
+        return self.df
+
+# Decorator base class
+class DataProcessorDecorator(DataProcessorBase):
+    def __init__(self, processor: DataProcessorBase):
+        """Initialize the decorator with a processor instance."""
+        self._processor = processor
+
+    def process(self):
+        """Delegate the processing to the wrapped processor."""
+        return self._processor.process()
+
+# Concrete decorator for deduplication
+class DeDuplicationDecorator(DataProcessorDecorator):
+    def process(self):
+        """Remove rows with empty or NaN values in column 'y'."""
+        df = self._processor.process()
+        df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
+        self._processor.df = df  # Update the processor's df
+        return self._processor.process()
+
+# Concrete decorator for noise removal
+class NoiseRemovalDecorator(DataProcessorDecorator):
+    def process(self):
+        """Remove noise patterns from 'Ticket Summary' and 'Interaction content'."""
+        df = self._processor.process()  # Get the current DataFrame from the previous processor
+        
+        # Define the noise patterns for 'Ticket Summary'
+        noise = "(sv\s*:)|(wg\s*:)|(ynt\s*:)|(fw(d)?\s*:)|(r\s*:)|(re\s*:)|(\[|\])|(aspiegel support issue submit)|(null)|(nan)|((bonus place my )?support.pt 自动回复:)"
+        df["Ticket Summary"] = df["Ticket Summary"].str.lower().replace(noise, " ", regex=True).replace(r'\s+', ' ', regex=True).str.strip()
+
+        # Define additional noise patterns for 'Interaction content'
         noise_1 = [
             "(from :)|(subject :)|(sent :)|(r\s*:)|(re\s*:)",
             "(january|february|march|april|may|june|july|august|september|october|november|december)",
@@ -58,7 +80,7 @@ class DataProcessor():
             "i would like to follow up on the case you raised on the date",
             "i will do my very best to assist you"
             "in order to give you the best solution",
-            "could you please clarify your request with following information:"
+            "could you please clarify your request with following information:",
             "in this matter",
             "we hope you(( are)|('re)) doing ((fine)|(well))",
             "i would like to follow up on the case you raised on",
@@ -71,38 +93,49 @@ class DataProcessor():
             "canada, australia, new zealand and other countries",
             "\d+",
             "[^0-9a-zA-Z]+",
-            "(\s|^).(\s|$)"]
-        for noise in noise_1:
-            # print(noise)
-            temp["ic"] = temp["ic"].replace(noise, " ", regex=True)
-        temp["ic"] = temp["ic"].replace(r'\s+', ' ', regex=True).str.strip()
-        # temp_debug = temp.loc[:, ["Interaction content", "ic", "y"]]
-        good_y1 = temp.y1.value_counts()[temp.y1.value_counts() > 10].index
-        temp = temp.loc[temp.y1.isin(good_y1)]
-        self.df = temp
+            "(\s|^).(\s|$)"
+        ]
 
-    def translate_to_en(self):
-        """Translates the ticket summary to English."""
-        df = self.df
-        texts = df[Config.TICKET_SUMMARY].to_list()
+        # Apply noise removal to 'Interaction content' column
+        for pattern in noise_1:
+            df["Interaction content"] = df["Interaction content"].replace(pattern, " ", regex=True)
+        
+        # Clean extra spaces and strip
+        df["Interaction content"] = df["Interaction content"].replace(r'\s+', ' ', regex=True).str.strip()
 
-        t2t_m = "facebook/m2m100_418M"
+        # Filter out low-frequency 'y1' values
+        good_y1 = df.y1.value_counts()[df.y1.value_counts() > 10].index
+        df = df.loc[df.y1.isin(good_y1)]
+        
+        # Update the DataFrame after processing
+        self._processor.df = df
+        return self._processor.process()
 
-        model = M2M100ForConditionalGeneration.from_pretrained(t2t_m)
-        tokenizer = M2M100Tokenizer.from_pretrained(t2t_m)
-        nlp_stanza = stanza.Pipeline(lang="multilingual", processors="langid",
-                                     download_method=DownloadMethod.REUSE_RESOURCES)
+# Concrete decorator for translation
+class TranslatorDecorator(DataProcessorDecorator):
+    def process(self):
+        """Translate 'Ticket Summary' from its original language to English."""
+        print("Ersters mal")
+        df = self._processor.process()  # Process the data from the previous decorator
+        print("Ersters mal")
+        texts = df[Config.TICKET_SUMMARY].to_list()  # Extract the text list for translation
 
-        text_en_l = []
+        # Initialize the translation model and tokenizer
+        model = M2M100ForConditionalGeneration.from_pretrained("facebook/m2m100_418M")
+        tokenizer = M2M100Tokenizer.from_pretrained("facebook/m2m100_418M")
+        
+        # Initialize the multilingual language detection pipeline
+        nlp_stanza = stanza.Pipeline(lang="multilingual", processors="langid", download_method=DownloadMethod.REUSE_RESOURCES)
+
+        text_en_l = []  # List to store translated text
         for text in tqdm(texts, desc="Translating", unit="text"):
             if text == "":
-                text_en_l = text_en_l + [text]
+                text_en_l.append(text)  # If empty text, append as is
                 continue
 
-            doc = nlp_stanza(text)
-            # print(doc.lang)
+            doc = nlp_stanza(text)  # Detect the language of the text
             if doc.lang == "en":
-                text_en_l = text_en_l + [text]
+                text_en_l.append(text)  # If already in English, append as is
             else:
                 lang = doc.lang
                 if lang == "fro":  # fro = Old French
@@ -114,22 +147,22 @@ class DataProcessor():
                 elif lang == "kmr":  # Kurmanji
                     lang = "tr"
 
-                tokenizer.src_lang = lang
-                encoded_hi = tokenizer(text, return_tensors="pt")
-                generated_tokens = model.generate(
-                    **encoded_hi, forced_bos_token_id=tokenizer.get_lang_id("en"))
-                text_en = tokenizer.batch_decode(
-                    generated_tokens, skip_special_tokens=True)
-                text_en = text_en[0]
+                tokenizer.src_lang = lang  # Set source language for tokenizer
+                encoded_text = tokenizer(text, return_tensors="pt")  # Encode the text
+                generated_tokens = model.generate(**encoded_text, forced_bos_token_id=tokenizer.get_lang_id("en"))  # Generate translation
+                text_en = tokenizer.batch_decode(generated_tokens, skip_special_tokens=True)[0]  # Decode the translation
+                text_en_l.append(text_en)
 
-                text_en_l = text_en_l + [text_en]
+        df[Config.TICKET_SUMMARY] = text_en_l  # Update the dataframe with translated text
+        self._processor.df = df  # Update the processor's dataframe attribute
+        return self._processor.process()  # Call the next decorator in the chain
 
-        df[Config.TICKET_SUMMARY] = text_en_l
-        self.df = df
-    
-    def convert_to_unicode(self):
-        """Converts the interaction content and ticket summary to unicode."""
-        df = self.df
+# Concrete decorator for Unicode conversion
+class UnicodeConversionDecorator(DataProcessorDecorator):
+    def process(self):
+        """Convert 'Interaction Content' and 'Ticket Summary' to Unicode."""
+        df = self._processor.process()
         df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
         df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
-        self.df = df
+        self._processor.df = df  # Update the processor's df
+        return self._processor.process()
