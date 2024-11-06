@@ -39,8 +39,7 @@ class DeDuplicationDecorator(DataProcessorDecorator):
         """Remove rows with empty or NaN values in column 'y'."""
         df = self._processor.process()
         df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
-        self._processor.df = df  # Update the processor's df
-        return self._processor.process()
+        return df
 
 # Concrete decorator for noise removal
 class NoiseRemovalDecorator(DataProcessorDecorator):
@@ -108,16 +107,13 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
         df = df.loc[df.y1.isin(good_y1)]
         
         # Update the DataFrame after processing
-        self._processor.df = df
-        return self._processor.process()
+        return df
 
 # Concrete decorator for translation
 class TranslatorDecorator(DataProcessorDecorator):
     def process(self):
         """Translate 'Ticket Summary' from its original language to English."""
-        print("Ersters mal")
         df = self._processor.process()  # Process the data from the previous decorator
-        print("Ersters mal")
         texts = df[Config.TICKET_SUMMARY].to_list()  # Extract the text list for translation
 
         # Initialize the translation model and tokenizer
@@ -154,8 +150,7 @@ class TranslatorDecorator(DataProcessorDecorator):
                 text_en_l.append(text_en)
 
         df[Config.TICKET_SUMMARY] = text_en_l  # Update the dataframe with translated text
-        self._processor.df = df  # Update the processor's dataframe attribute
-        return self._processor.process()  # Call the next decorator in the chain
+        return df
 
 # Concrete decorator for Unicode conversion
 class UnicodeConversionDecorator(DataProcessorDecorator):
@@ -164,5 +159,4 @@ class UnicodeConversionDecorator(DataProcessorDecorator):
         df = self._processor.process()
         df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype('U')
         df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype('U')
-        self._processor.df = df  # Update the processor's df
-        return self._processor.process()
+        return df
