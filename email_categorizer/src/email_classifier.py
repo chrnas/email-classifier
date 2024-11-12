@@ -1,4 +1,4 @@
-from data_preparation.data_processor import DataProcessor
+from data_preparation.data_processor import *
 from data_preparation.dataset_loader import DatasetLoader
 from feature_engineering.base_embeddings import BaseEmbeddings
 from feature_engineering.tfidf import TfidfEmbeddings
@@ -34,15 +34,14 @@ class EmailClassifier():
         self.df = self.data_set_loader.renameColumns(self.df)
 
         # preproccess the data
-        self.data_processor = DataProcessor(self.df)
-        self.data_processor.de_duplication()
-        self.data_processor.translate_to_en()
-        self.data_processor.remove_noise()
-        self.data_processor.convert_to_unicode()
-        self.df = self.data_processor.get_df()
+        processor = DataProcessor(self.df)
+        processor = DeDuplicationDecorator(processor)
+        processor = TranslatorDecorator(processor)
+        processor = NoiseRemovalDecorator(processor)
+        processor = UnicodeConversionDecorator(processor)
+        self.df = processor.process()
 
         # feature engineering
-        BaseEmbeddings
         self.base_embeddings = SentenceTransformerEmbeddings(self.df)
         self.base_embeddings.create_embeddings()
         X = self.base_embeddings.get_embeddings()
