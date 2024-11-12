@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import classification_report, confusion_matrix
 import random
+from sklearn.svm import SVC
 from .base import BaseModel
 
 num_folds = 0
@@ -14,7 +15,7 @@ random.seed(seed)
 # Carefully observe the methods below and try calling them in modelling.py
 
 
-class Bayes(BaseModel):
+class Svm(BaseModel):
     def __init__(self,
                  model_name: str,
                  embeddings: np.ndarray,
@@ -22,13 +23,13 @@ class Bayes(BaseModel):
         self.model_name = model_name
         self.embeddings = embeddings
         self.y = y
-        self.mdl = GaussianNB()
+        self.mdl = SVC()
         self.predictions = None
         self.data_transform()
 
     def train(self, data) -> None:
         self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
-        print("bayes")
+        print("svm")
 
     def predict(self, data) -> None:
         predictions = self.mdl.predict(data.get_X_test())

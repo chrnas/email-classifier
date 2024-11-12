@@ -27,4 +27,4 @@ class Word2VecEmbeddings(BaseEmbeddings):
         x2 = np.array([get_sentence_embedding(sentence, word2vec_model) for sentence in df["Ticket Summary"]])
 
         # Concatenate sentence embeddings along the second axis
-        self.X = np.concatenate((x1, x2), axis=1)
+        self.X = np.array( np.concatenate((x1, x2), axis=1))

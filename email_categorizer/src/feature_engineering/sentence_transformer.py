@@ -13,4 +13,4 @@ class SentenceTransformerEmbeddings(BaseEmbeddings):
         x2 = model.encode(df["Ticket Summary"].tolist())
         
         # Concatenate embeddings along the second axis
-        self.X = np.concatenate((x1, x2), axis=1)
+        self.X = np.array(np.concatenate((x1, x2), axis=1))
