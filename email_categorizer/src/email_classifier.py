@@ -8,6 +8,7 @@ from training_data import TrainingData
 from models.base import BaseModel
 from models.randomforest import RandomForest
 from models.bayes import Bayes
+from models.svc import SVC
 import pandas as pd
 from context_classification.context import ContextClassifier
 
@@ -40,7 +41,7 @@ class EmailClassifier():
         # preproccess the data
         processor = DataProcessor(self.df)
         processor = DeDuplicationDecorator(processor)
-        processor = TranslatorDecorator(processor)
+        # processor = TranslatorDecorator(processor)
         processor = NoiseRemovalDecorator(processor)
         processor = UnicodeConversionDecorator(processor)
         self.df = processor.process()
@@ -57,8 +58,8 @@ class EmailClassifier():
         
         context.train(self.data)
 
-        context.choose_strat(Bayes(
-            'Bayes', self.data.get_X_test(), self.data.get_type()))
+        context.choose_strat(SVC(
+            'SVC', self.data.get_X_test(), self.data.get_type()))
         context.train(self.data)
 
         #self.model.train(self.data)

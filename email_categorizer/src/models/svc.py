@@ -22,7 +22,7 @@ class SVC(BaseModel):
         self.model_name = model_name
         self.embeddings = embeddings
         self.y = y
-        self.mdl = SVC(kernel='rbf', C=1.0, gamma='scale') 
+        self.mdl = SVC() 
         self.predictions = None
         self.data_transform()
 
