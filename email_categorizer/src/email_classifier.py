@@ -5,8 +5,11 @@ from feature_engineering.tfidf import TfidfEmbeddings
 from feature_engineering.word2vec import Word2VecEmbeddings
 from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
 from training_data import TrainingData
+from models.base import BaseModel
 from models.randomforest import RandomForest
+from models.bayes import Bayes
 import pandas as pd
+from context_classification.context import ContextClassifier
 
 
 class EmailClassifier():
@@ -15,12 +18,13 @@ class EmailClassifier():
         self.data_set_loader: DatasetLoader = DatasetLoader()
         self.data_processor: DataProcessor = None
         self.base_embeddings: BaseEmbeddings = None
-        self.model: RandomForest = None
+        self.context: BaseModel = None
         self.df: pd.DataFrame = None
         self.data: TrainingData = None
 
     def getModel(self):
         return self.model
+    
 
     def classify_email(self, email: str) -> str:
         # This method will classify the email using the model, no idea how this will be used
@@ -48,10 +52,18 @@ class EmailClassifier():
 
         # modelling
         self.data = TrainingData(X, self.df)
-        self.model = RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type())
-        self.model.train(self.data)
-        self.model.predict(self.data)
+        context = ContextClassifier(RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type()))
+        
+        context.train(self.data)
+
+        context.choose_strat(Bayes(
+            'Bayes', self.data.get_X_test(), self.data.get_type()))
+        context.train(self.data)
+
+        #self.model.train(self.data)
+        context.predict(self.data)
+        #self.model.predict(self.data)
 
     def printModelEvaluation(self):
         self.model.print_results(self.data)
