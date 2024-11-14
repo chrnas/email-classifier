@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 class BaseModel(ABC):
@@ -12,6 +13,12 @@ class BaseModel(ABC):
     def predict(self, data) -> None:
         predictions = self.mdl.predict(data.get_X_test())
         self.predictions = predictions
+
+
+    def print_results(self, data):
+        print(self.predictions)
+        print(classification_report(data.get_y_test(), self.predictions))
+        print(confusion_matrix(data.get_y_test(), self.predictions))
 
     @abstractmethod
     def data_transform(self) -> None:

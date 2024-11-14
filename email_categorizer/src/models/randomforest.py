@@ -1,6 +1,5 @@
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
 import random
 from .base import BaseModel
 
@@ -26,11 +25,6 @@ class RandomForest(BaseModel):
             n_estimators=1000, random_state=seed, class_weight='balanced_subsample')
         self.predictions = None
         self.data_transform()
-
-    def print_results(self, data):
-        print(self.predictions)
-        print(classification_report(data.get_y_test(), self.predictions))
-        print(confusion_matrix(data.get_y_test(), self.predictions))
 
     def data_transform(self) -> None:
         ...
