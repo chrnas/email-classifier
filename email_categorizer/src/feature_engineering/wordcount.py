@@ -7,11 +7,12 @@ class Wordcount(BaseEmbeddings):
         df = self.df
         model = CountVectorizer()
         
+        # Vokabular auf beiden Textspalten fitten
+        model.fit(df["Interaction content"].tolist() + df["Ticket Summary"].tolist())
+
+        # Embeddings für beide Spalten generieren
+        x1 = model.transform(df["Interaction content"].tolist()).toarray()
+        x2 = model.transform(df["Ticket Summary"].tolist()).toarray()
         
-        # Generate embeddings for both columns
-        x1 = model.fit_transform(df["Interaction content"].tolist())
-        x2 = model.fit_transform(df["Ticket Summary"].tolist())
-        
-        # Concatenate embeddings along the second axis
-        self.X = np.array(np.concatenate((x1, x2), axis=1))
-       
+        # Embeddings entlang der zweiten Achse verketten
+        self.X = np.concatenate((x1, x2), axis=1)

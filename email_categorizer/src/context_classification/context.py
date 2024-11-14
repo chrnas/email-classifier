@@ -2,7 +2,7 @@ import pandas as pd
 from models.base import BaseModel
 
 
-class ContextClassify:
+class ContextClassifier:
     def __init__(self,modelstrat: BaseModel) -> None:
         self.modelstrat = modelstrat
     
