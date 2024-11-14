@@ -21,7 +21,6 @@ class Client:
         self.data_set_loader = DatasetLoader()
         self.command_executor = CommandExecutor()
         self.email_classifiers: list[EmailClassifierFacade] = []
-        self.active_email_classifier: EmailClassifierFacade = None
 
     def print_startup(self):
         print("Startup complete")
@@ -95,15 +94,11 @@ class Client:
                 command = ListEmailClassifiersCommand(
                     email_classifiers=self.email_classifiers
                 )
-                print(self.active_email_classifier)
                 self.command_executor.execute_command(command)
             case "choose_email_classifier":
-                active_email_classifier_ref = [self.active_email_classifier]
                 command = ChooseEmailClassifierCommand(
-                    self.email_classifiers, active_email_classifier_ref, args.name)
+                    self.email_classifiers, args.name)
                 self.command_executor.execute_command(command)
-                # Unwrap the updated active email classifier
-                #self.active_email_classifier = active_email_classifier_ref[0]
             case "change_strategy":
                 command = ChangeStrategyCommand(
                     email_classifier=self.email_classifiers[0], strategy=args.strategy)

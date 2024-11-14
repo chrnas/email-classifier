@@ -3,7 +3,7 @@ from data_preparation.simple_data_preprocessor_decorator_factory import SimpleDa
 from email_classifier_facade import EmailClassifierFacade
 from email_classifier_factory import EmailClassifierFactory
 from data_preparation.dataset_loader import DatasetLoader
-from models.classification_factory import ClassificationFactory
+from models.model_factory import ModelFactory
 
 # Abstract Command interface
 
@@ -81,13 +81,9 @@ class ChooseEmailClassifierCommand(Command):
     def __init__(
         self,
         email_classifiers: list[EmailClassifierFacade],
-        # Passing a mutable reference (list)
-        active_email_classifier_ref: list,
         name: str
     ):
         self.email_classifiers = email_classifiers
-        # Single-item list as a mutable ref
-        self.active_email_classifier_ref = active_email_classifier_ref
         self.name = name
 
     def execute(self):
@@ -95,9 +91,8 @@ class ChooseEmailClassifierCommand(Command):
         index = 0
         for email_classifier in self.email_classifiers:
             if email_classifier.name == self.name:
-                self.email_classifiers.insert(0,self.email_classifiers.pop(index))
-                # Update via mutable reference
-                #self.active_email_classifier_ref[0] = email_classifier
+                self.email_classifiers.insert(
+                    0, self.email_classifiers.pop(index))
                 print(f"Active email classifier changed to {self.name}")
                 found = True
                 break
@@ -108,15 +103,16 @@ class ChooseEmailClassifierCommand(Command):
 
 
 class ChangeStrategyCommand(Command):
-    def __init__(self, email_classifier: EmailClassifierFacade, strategy: str):
+    def __init__(self, email_classifier: EmailClassifierFacade, model: str):
         self.email_classifier = email_classifier
-        self.strategy = strategy
+        self.model = model
 
     def execute(self):
-        classification_strategy = ClassificationFactory().create_classification_strategy(
+        model = ModelFactory().create_classification_strategy(
             self.strategy)
-        self.email_classifier.modeler.change_strategy(classification_strategy)
-        print("Strategy changed to", self.strategy)
+        self.email_classifier.classification_strategy_contex.change_strategy(
+            model)
+        print("Model changed to", self.model)
 
 
 class AddPreprocessingCommand(Command):
@@ -128,7 +124,8 @@ class AddPreprocessingCommand(Command):
     def execute(self):
         self.pre_processing_feature_decorator = SimpleDataPreProcessorDecoratorFactory().create_data_preprocessor(
             self.email_classifier.data_preprocessor, self.feature)
-        print(f"self pre processing feature: {self.pre_processing_feature_decorator}")  
+        print(f"self pre processing feature: {
+              self.pre_processing_feature_decorator}")
         self.email_classifier.add_preprocessing(
             self.pre_processing_feature_decorator)
         print(f"Preprocessing {self.feature} added")
