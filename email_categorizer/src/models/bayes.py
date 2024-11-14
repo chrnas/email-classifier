@@ -26,14 +26,6 @@ class Bayes(BaseModel):
         self.predictions = None
         self.data_transform()
 
-    def train(self, data) -> None:
-        self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
-        print("bayes")
-
-    def predict(self, data) -> None:
-        predictions = self.mdl.predict(data.get_X_test())
-        self.predictions = predictions
-
     def print_results(self, data):
         print(self.predictions)
         print(classification_report(data.get_y_test(), self.predictions))
