@@ -1,26 +1,24 @@
 from abc import ABC, abstractmethod
+from sklearn.metrics import classification_report, confusion_matrix
 
 
 class BaseModel(ABC):
     def __init__(self) -> None:
         ...
 
+    def train(self, data) -> None:
+        self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
+        print("bayes")
 
-    @abstractmethod
-    def train(self) -> None:
-        """
-        Train the model using ML Models for Multi-class and mult-label classification.
-        :params: df is essential, others are model specific
-        :return: classifier
-        """
-        ...
+    def predict(self, data) -> None:
+        predictions = self.mdl.predict(data.get_X_test())
+        self.predictions = predictions
 
-    @abstractmethod
-    def predict(self) -> int:
-        """
 
-        """
-        ...
+    def print_results(self, data):
+        print(self.predictions)
+        print(classification_report(data.get_y_test(), self.predictions))
+        print(confusion_matrix(data.get_y_test(), self.predictions))
 
     @abstractmethod
     def data_transform(self) -> None:

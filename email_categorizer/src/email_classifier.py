@@ -8,7 +8,6 @@ from feature_engineering.wordcount import WordcountEmbeddings
 from training_data import TrainingData
 from models.randomforest import RandomForest
 from models.bayes import Bayes
-from models.svm import Svm
 from context_classification.context import ContextClassifier
 import pandas as pd
 
