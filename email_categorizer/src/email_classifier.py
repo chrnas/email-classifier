@@ -55,8 +55,7 @@ class EmailClassifier():
 
         # modelling
         self.data = TrainingData(X, self.df)
-        context = ContextClassifier(RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type()))
+        context = ContextClassifier()
         
         context.train(self.data)
 

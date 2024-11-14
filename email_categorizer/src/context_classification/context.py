@@ -1,10 +1,12 @@
 import pandas as pd
 from models.base import BaseModel
+from models.randomforest import RandomForest
 
 
 class ContextClassifier:
-    def __init__(self,modelstrat: BaseModel) -> None:
-        self.modelstrat = modelstrat
+    def __init__(self) -> None:
+        self.modelstrat =RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type())
     
     def choose_strat(self,modelstrat: BaseModel):
         self.modelstrat = modelstrat
