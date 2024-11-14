@@ -4,11 +4,11 @@ from feature_engineering.base_embeddings import BaseEmbeddings
 from feature_engineering.tfidf import TfidfEmbeddings
 from feature_engineering.word2vec import Word2VecEmbeddings
 from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
+from feature_engineering.wordcount import WordcountEmbeddings
 from training_data import TrainingData
 from models.randomforest import RandomForest
 from models.bayes import Bayes
 from models.svm import Svm
-from feature_engineering.wordcount import Wordcount
 from context_classification.context import ContextClassifier
 import pandas as pd
 
@@ -48,24 +48,20 @@ class EmailClassifier():
         self.df = self.data_processor.get_df()
 
         # feature engineering
-
         BaseEmbeddings
-        self.base_embeddings = SentenceTransformerEmbeddings(self.df)
-
+        self.base_embeddings = WordcountEmbeddings(self.df)
         self.base_embeddings.create_embeddings()
         X = self.base_embeddings.get_embeddings()
 
         # modelling
         self.data = TrainingData(X, self.df)
-
-        
         context = ContextClassifier(RandomForest(
             'RandomForest', self.data.get_X_test(), self.data.get_type()))
         
         context.train(self.data)
 
-        context.choose_strat(Svm(
-            'Svm', self.data.get_X_test(), self.data.get_type()))
+        context.choose_strat(RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type()))
         context.train(self.data)
 
         #self.model.train(self.data)

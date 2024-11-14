@@ -2,7 +2,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 import numpy as np
 from .base_embeddings import BaseEmbeddings
 
-class Wordcount(BaseEmbeddings):
+class WordcountEmbeddings(BaseEmbeddings):
     def create_embeddings(self):
         df = self.df
         model = CountVectorizer()
