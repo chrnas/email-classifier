@@ -16,7 +16,6 @@ class Client:
     email_classifiers: list[EmailClassifierFacade]
     data_set_loader: DatasetLoader
     command_executor: CommandExecutor
-    active_email_classifier: EmailClassifierFacade
 
     def __init__(self):
         self.data_set_loader = DatasetLoader()
@@ -59,10 +58,10 @@ class Client:
                 print("test command executed")
             case "add_emails":
                 command = AddEmailsCommand(
-                    email_classifier=self.active_email_classifier)
+                    email_classifier=self.email_classifiers[0])
             case "classify_emails":
                 command = ClassifyEmailCommand(
-                    email_classifier=self.active_email_classifier)
+                    email_classifier=self.email_classifiers[0])
                 self.command_executor.execute_command(command)
             case "create_email_classifier":
                 config = {
@@ -104,23 +103,23 @@ class Client:
                     self.email_classifiers, active_email_classifier_ref, args.name)
                 self.command_executor.execute_command(command)
                 # Unwrap the updated active email classifier
-                self.active_email_classifier = active_email_classifier_ref[0]
+                #self.active_email_classifier = active_email_classifier_ref[0]
             case "change_strategy":
                 command = ChangeStrategyCommand(
-                    email_classifier=self.active_email_classifier, strategy=args.strategy)
+                    email_classifier=self.email_classifiers[0], strategy=args.strategy)
                 self.command_executor.execute_command(command)
             case "add_preprocessing":
                 command = AddPreprocessingCommand(
-                    email_classifier=self.active_email_classifier, feature=args.feature)
+                    email_classifier=self.email_classifiers[0], feature=args.feature)
                 self.command_executor.execute_command(command)
                 print("Preprocessing {args.command} added")
             case "train_model":
                 command = TrainModelCommand(
-                    email_classifier=self.active_email_classifier, path=args.path)
+                    email_classifier=self.email_classifiers[0], path=args.path)
                 self.command_executor.execute_command(command)
             case "display_evaluation":
                 command = DisplayEvaluationCommand(
-                    email_classifier=self.active_email_classifier)
+                    email_classifier=self.email_classifiers[0])
                 self.command_executor.execute_command(command)
             case "exit":
                 print("Exiting CLI.")

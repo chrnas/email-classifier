@@ -31,6 +31,13 @@ class EmailClassifierFacade():
         self.data_set_loader = DatasetLoader()
         self.model = None
         self.name = str(random.randint(0, 1000000))
+        
+    def __eq__(self, other):
+        # Define equality based on name and age
+        return self.name == other.name
+    
+    def __str__(self) -> str:
+        return f"Email classifier name: {self.name}"
 
     def add_emails(self, path):
         self.emails = self.data_set_loader.read_data(path)
