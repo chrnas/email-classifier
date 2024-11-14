@@ -6,10 +6,11 @@ from feature_engineering.word2vec import Word2VecEmbeddings
 from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
 from feature_engineering.wordcount import WordcountEmbeddings
 from training_data import TrainingData
-from models.base import BaseModel
 from models.randomforest import RandomForest
-import pandas as pd
+from models.bayes import Bayes
+from models.svm import Svm
 from context_classification.context import ContextClassifier
+import pandas as pd
 
 
 class EmailClassifier():
@@ -18,13 +19,14 @@ class EmailClassifier():
         self.data_set_loader: DatasetLoader = DatasetLoader()
         self.data_processor: DataProcessor = None
         self.base_embeddings: BaseEmbeddings = None
-        self.model: RandomForest = None
+
+        self.context: ContextClassifier = None
+
         self.df: pd.DataFrame = None
         self.data: TrainingData = None
 
     def getModel(self):
         return self.model
-    
 
     def classify_email(self, email: str) -> str:
         # This method will classify the email using the model, no idea how this will be used
@@ -47,16 +49,26 @@ class EmailClassifier():
 
         # feature engineering
         BaseEmbeddings
-        self.base_embeddings = SentenceTransformerEmbeddings(self.df)
+        self.base_embeddings = WordcountEmbeddings(self.df)
         self.base_embeddings.create_embeddings()
         X = self.base_embeddings.get_embeddings()
 
         # modelling
         self.data = TrainingData(X, self.df)
-        self.model = RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type())
-        self.model.train(self.data)
-        self.model.predict(self.data)
+        context = ContextClassifier(RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type()))
+        
+        context.train(self.data)
+
+        context.choose_strat(RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type()))
+        context.train(self.data)
+
+        #self.model.train(self.data)
+        context.predict(self.data)
+        self.context =context
+        #self.model.predict(self.data)
+
 
     def printModelEvaluation(self):
         self.context.print_results(self.data)
