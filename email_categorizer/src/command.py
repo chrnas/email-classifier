@@ -92,13 +92,16 @@ class ChooseEmailClassifierCommand(Command):
 
     def execute(self):
         found = False
+        index = 0
         for email_classifier in self.email_classifiers:
             if email_classifier.name == self.name:
+                self.email_classifiers.insert(0,self.email_classifiers.pop(index))
                 # Update via mutable reference
-                self.active_email_classifier_ref[0] = email_classifier
+                #self.active_email_classifier_ref[0] = email_classifier
                 print(f"Active email classifier changed to {self.name}")
                 found = True
                 break
+            index += 1
 
         if not found:
             print(f"Email classifier '{self.name}' not found.")
