@@ -4,11 +4,10 @@ from feature_engineering.base_embeddings import BaseEmbeddings
 from feature_engineering.tfidf import TfidfEmbeddings
 from feature_engineering.word2vec import Word2VecEmbeddings
 from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
+from feature_engineering.wordcount import WordcountEmbeddings
 from training_data import TrainingData
 from models.base import BaseModel
 from models.randomforest import RandomForest
-from models.bayes import Bayes
-from models.svc import SVC
 import pandas as pd
 from context_classification.context import ContextClassifier
 
@@ -19,7 +18,7 @@ class EmailClassifier():
         self.data_set_loader: DatasetLoader = DatasetLoader()
         self.data_processor: DataProcessor = None
         self.base_embeddings: BaseEmbeddings = None
-        self.context: BaseModel = None
+        self.model: RandomForest = None
         self.df: pd.DataFrame = None
         self.data: TrainingData = None
 
@@ -47,24 +46,17 @@ class EmailClassifier():
         self.df = processor.process()
 
         # feature engineering
+        BaseEmbeddings
         self.base_embeddings = SentenceTransformerEmbeddings(self.df)
         self.base_embeddings.create_embeddings()
         X = self.base_embeddings.get_embeddings()
 
         # modelling
         self.data = TrainingData(X, self.df)
-        context = ContextClassifier(RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type()))
-        
-        context.train(self.data)
-
-        context.choose_strat(SVC(
-            'SVC', self.data.get_X_test(), self.data.get_type()))
-        context.train(self.data)
-
-        #self.model.train(self.data)
-        context.predict(self.data)
-        #self.model.predict(self.data)
+        self.model = RandomForest(
+            'RandomForest', self.data.get_X_test(), self.data.get_type())
+        self.model.train(self.data)
+        self.model.predict(self.data)
 
     def printModelEvaluation(self):
-        self.model.print_results(self.data)
+        self.context.print_results(self.data)
