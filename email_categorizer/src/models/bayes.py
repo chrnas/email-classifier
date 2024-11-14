@@ -24,6 +24,7 @@ class Bayes(BaseModel):
         self.mdl = GaussianNB()
         self.predictions = None
         self.data_transform()
+        print("bayes")
 
     def data_transform(self) -> None:
         ...

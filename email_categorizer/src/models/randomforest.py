@@ -25,6 +25,7 @@ class RandomForest(BaseModel):
             n_estimators=1000, random_state=seed, class_weight='balanced_subsample')
         self.predictions = None
         self.data_transform()
+        print("random forest")
 
     def data_transform(self) -> None:
         ...

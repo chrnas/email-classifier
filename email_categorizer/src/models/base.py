@@ -8,7 +8,7 @@ class BaseModel(ABC):
 
     def train(self, data) -> None:
         self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
-        print("bayes")
+        print("training ...")
 
     def predict(self, data) -> None:
         predictions = self.mdl.predict(data.get_X_test())

@@ -24,6 +24,7 @@ class SVC(BaseModel):
         self.mdl = SVC() 
         self.predictions = None
         self.data_transform()
+        print("svc")
 
     def data_transform(self) -> None:
         ...

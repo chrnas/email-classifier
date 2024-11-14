@@ -48,25 +48,22 @@ class EmailClassifier():
 
         # feature engineering
         BaseEmbeddings
-        self.base_embeddings = WordcountEmbeddings(self.df)
+        self.base_embeddings = SentenceTransformerEmbeddings(self.df)
         self.base_embeddings.create_embeddings()
         X = self.base_embeddings.get_embeddings()
 
         # modelling
         self.data = TrainingData(X, self.df)
-        context = ContextClassifier()
-        
-        context.train(self.data)
-
+        context = ContextClassifier(self.data)
         context.choose_strat(RandomForest(
             'RandomForest', self.data.get_X_test(), self.data.get_type()))
-        context.train(self.data)
+        context.train()
 
         #self.model.train(self.data)
-        context.predict(self.data)
-        self.context =context
+        context.predict()
+        self.context = context
         #self.model.predict(self.data)
 
 
     def printModelEvaluation(self):
-        self.context.print_results(self.data)
+        self.context.print_results()
