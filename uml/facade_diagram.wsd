@@ -1,0 +1,59 @@
+@startuml
+!theme mono
+
+class EmailClassifierFacade {
+    - df: pd.DataFrame
+    - emails: list[str]
+    - name: str
+    + __str__(): str
+    + add_emails(path: str): void
+    + classify_emails(): void
+    + change_strategy(model: BaseModel): void
+    + add_preprocessing(data_processor_decorator: DataProcessorDecorator): void
+    + train_model(path: str): void
+    + displayEvaluation(): void
+}
+
+class DatasetLoader {
+    + read_data(path: str): pd.DataFrame
+    + renameColumns(df: pd.DataFrame): pd.DataFrame
+}
+
+class DataProcessor {
+    + process(df: pd.DataFrame): pd.DataFrame
+}
+
+class BaseEmbeddings {
+    + create_embeddings(): void
+}
+
+class ContextClassifier {
+    + classify(emails: list[str]): void
+    + choose_strat(model: BaseModel): void
+    + train(data: TrainingData): void
+    + predict(data: TrainingData): void
+    + print_results(data: TrainingData): void
+}
+
+class BaseModel {
+    + fit(): void
+    + predict(): np.ndarray
+    + print_results(data: TrainingData): void
+}
+
+class TrainingData {
+    - X: np.ndarray
+    - df: pd.DataFrame
+    + __init__(X: np.ndarray, df: pd.DataFrame)
+    + get_X_test(): np.ndarray
+    + get_type(): np.ndarray
+}
+
+EmailClassifierFacade o-- DatasetLoader
+EmailClassifierFacade o-- DataProcessor
+EmailClassifierFacade o-- BaseEmbeddings
+EmailClassifierFacade o-- ContextClassifier
+EmailClassifierFacade o-- TrainingData
+ContextClassifier ..> BaseModel
+
+@enduml

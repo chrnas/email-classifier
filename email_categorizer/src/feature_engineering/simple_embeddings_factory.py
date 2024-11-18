@@ -12,7 +12,7 @@ class SimpleEmbeddingsFactory:
             return SentenceTransformerEmbeddings(df)
         elif embedding_type == "tfidf":
             return TfidfEmbeddings(df)
-        elif embedding_type == "tfidf-sentence_transformer":
-            raise TfidfSentenceEmbeddings(df)
+        #elif embedding_type == "tfidf-sentence_transformer":
+        #    raise TfidfSentenceEmbeddings(df)
         else:
             raise ValueError(f"Unknown embedding type: {embedding_type}. Choose between 'tfidf', 'word2vec' or 'sentence_transformer'.")

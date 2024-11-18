@@ -1,0 +1,77 @@
+@startuml
+!theme mono
+
+class Client {
+    - email_classifiers: list[EmailClassifierFacade]
+    - data_set_loader: DatasetLoader
+    - command_executor: CommandInvoker
+    + __init__()
+    + print_startup(): void
+    + create_parser(): argparse.ArgumentParser
+    + create_completer(): NestedCompleter
+    + run_cli(): void
+    + handle_command(args): bool
+}
+
+class CommandInvoker {
+    + execute_command(command: Command): void
+}
+
+class Command {
+    + execute(): void
+}
+
+class AddEmailsCommand {
+    + execute(): void
+}
+
+class ClassifyEmailCommand {
+    + execute(): void
+}
+
+class CreateEmailClassifierCommand {
+    + execute(): void
+}
+
+class ChangeStrategyCommand {
+    + execute(): void
+}
+
+class ChooseEmailClassifierCommand {
+    + execute(): void
+}
+
+class AddPreprocessingCommand {
+    + execute(): void
+}
+
+class TrainModelCommand {
+    + execute(): void
+}
+
+class DisplayEvaluationCommand {
+    + execute(): void
+}
+
+class ListEmailClassifiersCommand {
+    + execute(): void
+}
+
+class EmailClassifierFacade {
+}
+
+Client o-- "1..*" EmailClassifierFacade : manages
+Client o-- CommandInvoker
+CommandInvoker --> Command : invokes
+Command <|-- AddEmailsCommand
+Command <|-- ClassifyEmailCommand
+Command <|-- CreateEmailClassifierCommand
+Command <|-- ChangeStrategyCommand
+Command <|-- ChooseEmailClassifierCommand
+Command <|-- AddPreprocessingCommand
+Command <|-- TrainModelCommand
+Command <|-- DisplayEvaluationCommand
+Command <|-- ListEmailClassifiersCommand
+EmailClassifierFacade o-- "1..*" Command
+
+@enduml

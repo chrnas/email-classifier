@@ -61,7 +61,7 @@ class EmailClassifier():
         context.train(self.data)
 
         context.choose_strat(RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type()))
+            'RandomForest', self.data.X_test, self.data.y))
         context.train(self.data)
 
         #self.model.train(self.data)
