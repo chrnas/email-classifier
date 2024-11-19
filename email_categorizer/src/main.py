@@ -1,5 +1,5 @@
 from context_classification.context import ContextClassifier
-from data_preparation.data_processor_flex import DataProcessor, TranslatorDecorator
+from data_preparation.data_processor import DataProcessor, TranslatorDecorator
 from email_classifier import EmailClassifier
 from feature_engineering.tfidf import TfidfEmbeddings
 from data_preparation.dataset_loader import DatasetLoader
