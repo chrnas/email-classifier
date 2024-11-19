@@ -30,3 +30,7 @@ class BaseModel(ABC):
         self.__dict__.update(self.defaults)
         self.__dict__.update(values)
         return self
+
+    def predict_emails(self, emails_to_predict):
+            predictions = self.mdl.predict(emails_to_predict)
+            print(predictions)
