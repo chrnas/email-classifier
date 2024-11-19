@@ -3,8 +3,7 @@ import numpy as np
 from .base_embeddings import BaseEmbeddings
 
 class WordcountEmbeddings(BaseEmbeddings):
-    def create_embeddings(self):
-        df = self.df
+    def create_embeddings(self, df):
         model = CountVectorizer()
         
         # Vokabular auf beiden Textspalten fitten
@@ -15,4 +14,6 @@ class WordcountEmbeddings(BaseEmbeddings):
         x2 = model.transform(df["Ticket Summary"].tolist()).toarray()
         
         # Embeddings entlang der zweiten Achse verketten
-        self.X = np.concatenate((x1, x2), axis=1)
+        X = np.concatenate((x1, x2), axis=1)
+
+        return X

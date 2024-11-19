@@ -48,9 +48,8 @@ class EmailClassifier():
 
         # feature engineering
         BaseEmbeddings
-        self.base_embeddings = SentenceTransformerEmbeddings(self.df)
-        self.base_embeddings.create_embeddings()
-        X = self.base_embeddings.get_embeddings()
+        self.base_embeddings = SentenceTransformerEmbeddings()
+        X = self.base_embeddings.create_embeddings(self.df)
 
         # modelling
         self.data = TrainingData(X, self.df)

@@ -7,9 +7,8 @@ class Word2VecEmbeddings(BaseEmbeddings):
         """Simple tokenizer: split sentence into words. You can enhance this for more sophisticated tokenization."""
         return sentence.split()
 
-    def create_embeddings(self):
+    def create_embeddings(self, df):
         """Converts text data from 'Interaction content' and 'Ticket Summary' columns into Word2Vec embeddings, then concatenates them into a single feature matrix."""
-        df = self.df
 
         # Tokenize sentences into words
         sentences = df["Interaction content"].apply(self.tokenize_sentence).tolist() + \
@@ -27,4 +26,6 @@ class Word2VecEmbeddings(BaseEmbeddings):
         x2 = np.array([get_sentence_embedding(sentence, word2vec_model) for sentence in df["Ticket Summary"]])
 
         # Concatenate sentence embeddings along the second axis
-        self.X = np.array( np.concatenate((x1, x2), axis=1))
+        X = np.array( np.concatenate((x1, x2), axis=1))
+
+        return X
