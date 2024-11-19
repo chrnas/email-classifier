@@ -22,5 +22,6 @@ class ContextClassifier():
     def print_results(self,data):
         self.modelstrat.print_results(data)
     
-
+    def predict_emails(self, emails_to_predict):
+        self.modelstrat.predict_emails(emails_to_predict)  
   

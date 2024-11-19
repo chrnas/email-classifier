@@ -37,7 +37,6 @@ class EmailClassifier():
         embedding_t = config["embedding_types"]
         preprocessing_t = config["preprocessing_steps"]
         df_input = pd.read_csv(csv_file)
-        
 
     def train_model(self, path: str) -> None:
         # load the data
@@ -60,21 +59,28 @@ class EmailClassifier():
         self.data = TrainingData(X, self.df)
         context = ContextClassifier(self.data)
         context.choose_strat(RandomForest(
-
             'RandomForest', self.data.X_test, self.data.y))
-        context.train(self.data)
-        """
-        input_path= "email_categorizer/data/TestEmails.csv"
+        context.train()
+        #self.model.train(self.data)
+        context.predict(self.data)
+        #self.model.predict(self.data)
+        self.context = context
+
+
+
+        input_path= "/Users/patrickvorreiter/Documents/Studium/2024 Wintersemester/Systems Analysis and Design/email-categorizer/email_categorizer/data/TestEmails.csv"
         df_input = self.data_set_loader.read_data(input_path)
         df_input = self.data_set_loader.renameColumns(df_input)
-        """
-        #self.model.train(self.data)
-        #context.predict(self.data)
-        context.predict(self.data)
-        self.context = context
-        #self.model.predict(self.data)
-        self.context.print_results(self.data)
-
+        # preproccess the data
+        processor = DataProcessor(df_input)
+        processor = DeDuplicationDecorator(processor)
+        # processor = TranslatorDecorator(processor)
+        processor = NoiseRemovalDecorator(processor)
+        processor = UnicodeConversionDecorator(processor)
+        df_input = processor.process()
+        X_input = self.base_embeddings.create_embeddings(self.df)
+        self.context.predict_emails(X_input)
+        
 
     def printModelEvaluation(self):
-        self.context.print_results(self.df)
+        self.context.print_results(self.data)
