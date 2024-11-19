@@ -55,8 +55,11 @@ class EmailClassifier():
         self.data = TrainingData(X, self.df)
         context = ContextClassifier(self.data)
         context.choose_strat(RandomForest(
-            'RandomForest', self.data.get_X_test(), self.data.get_type()))
-        context.train()
+
+            'RandomForest', self.data.X_test, self.data.y))
+        context.train(self.data)
+
+
 
         #self.model.train(self.data)
         context.predict()

@@ -43,7 +43,6 @@ class CreateEmailClassifierCommand(Command):
     def __init__(
         self,
         email_classifiers: list[EmailClassifierFacade],
-        config: dict,
         path: str,
     ):
         self.config = config

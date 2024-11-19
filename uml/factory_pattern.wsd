@@ -1,0 +1,38 @@
+@startuml
+!theme mono
+
+class EmailClassifierFacade {
+    - base_embedding: BaseEmbedding
+}
+
+class SimpleEmbeddingsFactory {
+    + create_embeddings(embedding_type: str, df: pd.DataFrame): Embedding
+}
+
+class SentenceTransformerEmbeddings {
+    - df: pd.DataFrame
+    + transform(): np.ndarray
+}
+
+class TfidfEmbeddings {
+    - df: pd.DataFrame
+    + transform(): np.ndarray
+}
+
+class Word2VecEmbeddings {
+    - df: pd.DataFrame
+    + transform(): np.ndarray
+}
+
+interface BaseEmbedding {
+    + transform(): np.ndarray
+}
+
+EmailClassifierFacade o-- BaseEmbedding
+EmailClassifierFacade --> SimpleEmbeddingsFactory: uses
+SimpleEmbeddingsFactory ..> BaseEmbedding : creates
+BaseEmbedding <|-- SentenceTransformerEmbeddings
+BaseEmbedding <|-- TfidfEmbeddings
+BaseEmbedding <|-- Word2VecEmbeddings
+
+@enduml

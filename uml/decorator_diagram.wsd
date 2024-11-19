@@ -1,0 +1,46 @@
+@startuml
+!theme mono
+
+class EmailClassifierFacade {
+    ++add_preprocessing(model: Model): void
+}
+
+abstract class DataProcessorBase {
+    - df: pd.DataFrame
+    + process(): pd.DataFrame
+}
+
+class DataProcessor {
+    + process(): pd.DataFrame
+}
+
+class DataProcessorDecorator {
+    - _processor: DataProcessorBase
+    + process(): pd.DataFrame
+}
+
+class DeDuplicationDecorator {
+    + process(): pd.DataFrame
+}
+
+class NoiseRemovalDecorator {
+    + process(): pd.DataFrame
+}
+
+class TranslatorDecorator {
+    + process(): pd.DataFrame
+}
+
+class UnicodeConversionDecorator {
+    + process(): pd.DataFrame
+}
+
+EmailClassifierFacade o-- DataProcessorBase
+DataProcessorBase <|-- DataProcessor
+DataProcessorBase <|-- DataProcessorDecorator
+DataProcessorDecorator <|-- DeDuplicationDecorator
+DataProcessorDecorator <|-- NoiseRemovalDecorator
+DataProcessorDecorator <|-- TranslatorDecorator
+DataProcessorDecorator <|-- UnicodeConversionDecorator
+
+@enduml

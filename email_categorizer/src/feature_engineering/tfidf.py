@@ -12,3 +12,4 @@ class TfidfEmbeddings(BaseEmbeddings):
             x2 = tfidfconverter.fit_transform(df["Ticket Summary"].toarray())
             X = np.concatenate((x1, x2), axis=1)
             return X
+       

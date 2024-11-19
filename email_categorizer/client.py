@@ -152,6 +152,7 @@ def create_parser() -> argparse.ArgumentParser:
         'create_email_classifier', help='Create an email classifier.')
     create_email_classifier_parser.add_argument(
         'path', help='Path to the email files.')
+    create_email_classifier_parser.add_argument('--embedding', choices=['tfidf', 'word2vec'], help='Type of embedding to use', required=True)
      # PosList command
     choose_email_classifier = subparsers.add_parser(
         'choose_email_classifier', help='Choose email classifier.')
@@ -161,7 +162,7 @@ def create_parser() -> argparse.ArgumentParser:
     change_strategy_parser = subparsers.add_parser(
         'change_strategy', help='Change strategy.')
     change_strategy_parser.add_argument(
-        'strategy', help='Change strategy to bayes.')
+        'strategy', choices=['tfidf', 'word2vec'] help='Change strategy to bayes.')
 
     # Add preprocessing command
     add_pre_processing_parser = subparsers.add_parser(
