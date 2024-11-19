@@ -23,6 +23,7 @@ class TrainingData():
 
     def get_X_train(self):
         return self.X_train
+        print(self.X_train)
 
     def get_X_test(self):
         return self.X_test
