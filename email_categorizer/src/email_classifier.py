@@ -78,8 +78,10 @@ class EmailClassifier():
         processor = NoiseRemovalDecorator(processor)
         processor = UnicodeConversionDecorator(processor)
         df_input = processor.process()
-        X_input = self.base_embeddings.create_embeddings(self.df)
+        X_input = self.base_embeddings.create_embeddings(df_input)
+        print("_____BEFORE________")
         self.context.predict_emails(X_input)
+        print("_____AFTER________")
         
 
     def printModelEvaluation(self):
