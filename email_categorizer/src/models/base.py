@@ -7,11 +7,11 @@ class BaseModel(ABC):
         ...
 
     def train(self, data: TrainingData) -> None:
-        self.mdl = self.mdl.fit(data.get_X_test(), data.get_y_train())
+        self.mdl = self.mdl.fit(data.X_train, data.y_train)
         print("training ...")
 
     def predict(self, data) -> None:
-        predictions = self.mdl.predict(data.get_X_test())
+        predictions = self.mdl.predict(data.X_test)
         self.predictions = predictions
 
 
@@ -34,3 +34,7 @@ class BaseModel(ABC):
     def predict_emails(self, emails_to_predict):
             predictions = self.mdl.predict(emails_to_predict)
             print(predictions)
+            index = 0
+            for prediction in predictions:
+                index += 1
+                print(f"Prediction for email {index}:{prediction}")

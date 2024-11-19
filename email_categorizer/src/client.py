@@ -92,7 +92,7 @@ class Client:
         model_dict = ['bayes', 'randomforest', 'svc']
         embeddings_dict = ['tfidf', 'wordcount', 'sentence_transformer']
         completer_dict = {
-            'create_email_classifier AppGallery.csv sentence_transformer randomforest emailclassifiertest': None,
+            'create_email_classifier AppGallery.csv tfidf randomforest emailclassifiertest': None,
             'test': {emailclassifier.name: None for emailclassifier in self.email_classifiers},
             'add_emails': {paths: None for paths in os.listdir("../data")},
             'classify_emails': None,
@@ -130,8 +130,8 @@ class Client:
             except SystemExit:
                 # argparse throws a SystemExit exception if parsing fails, we'll catch it to keep the loop running
                 continue
-            #except Exception as e:
-            #    print(f"Error: {e}")
+            except Exception as e:
+                print(f"Error: {e}")
 
     def handle_input(self, args) -> bool:
         match args.command:

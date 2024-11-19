@@ -35,14 +35,14 @@ if __name__ == '__main__':
 
     # feature engineering
     base_embeddings = SentenceTransformerEmbeddings()
-    X = base_embeddings.create_embeddings(df)
+    X = base_embeddings.create_training_embeddings(df)
 
     # modelling
     data = TrainingData(X, df)
     context = ContextClassifier(data)
 
     context.choose_strat(RandomForest(
-        'RandomForest', data.get_X_test(), data.get_type()))
+        'RandomForest', data.X_train, data.y_train))
     context.train()
     # model.train(data)
     context.predict()

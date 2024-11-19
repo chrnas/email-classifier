@@ -40,7 +40,7 @@ class ClassifyEmailCommand(Command):
         self.email_classifier = email_classifier
 
     def execute(self):
-        pass
+        self.email_classifier.classify_emails()
 
     def undo(self):
         print("There is no undo operation for the classify email command.")

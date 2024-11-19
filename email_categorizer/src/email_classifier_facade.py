@@ -44,12 +44,12 @@ class EmailClassifierFacade():
     def add_emails(self, path):
         data_set_loader = DatasetLoader()
         self.emails = data_set_loader.read_data(path)
-        self.emails = data_set_loader.renameColumns(self.df)
+        self.emails = data_set_loader.renameColumns(self.emails)
 
     def classify_emails(self):
         df = self.data_preprocessor.process(self.emails)
-        X = self.base_embeddings.create_embeddings()
-        self.model_contex.predict(X)
+        X = self.base_embeddings.create_classification_embeddings(df)
+        self.model_context.predict_emails(X)
 
     def change_strategy(self, model_type: str):
         model = ModelFactory().create_model(
@@ -62,7 +62,6 @@ class EmailClassifierFacade():
 
         print("Processor:", self.data_preprocessor)
 
-
     def train_model(self, path: str):
         # load the data
         data_set_loader = DatasetLoader()
@@ -74,7 +73,7 @@ class EmailClassifierFacade():
         #self.feature_engineer = SimpleEmbeddingsFactory().create_embeddings(
         #    "sentence_transformer", self.df
         #)
-        X = self.base_embeddings.create_embeddings(self.df)
+        X = self.base_embeddings.create_training_embeddings(self.df)
         
 
         # modelling
