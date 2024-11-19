@@ -20,6 +20,8 @@ class EmailClassifierFactory:
         model_type: str,
         name: str
     ):
+        # data_processor = DataPreProcessorFactory().create_data_preprocessor(
+        #    df, pre_processing_features)
         data_processor = DataProcessor()
         df = data_processor.process(df)
         feature_engineer = SimpleEmbeddingsFactory().create_embeddings(
@@ -29,10 +31,11 @@ class EmailClassifierFactory:
         data = TrainingData(X, df)
         model = ModelFactory().create_model(
             model_type, data.get_X_test(), data.get_type())
-        strategy_context = ContextClassifier(model)
-        #strategy_context.train()
-        #strategy_context.predict()
-        #strategy_context.print_results()
+        strategy_context = ContextClassifier(data)
+        strategy_context.choose_strat(model)
+        strategy_context.train()
+        strategy_context.predict()
+        strategy_context.print_results()
         email_classifier = EmailClassifierFacade(
             feature_engineer,
             data_processor,

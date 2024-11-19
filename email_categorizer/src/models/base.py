@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from sklearn.metrics import classification_report, confusion_matrix
-
+from training_data import TrainingData
 
 class BaseModel(ABC):
     def __init__(self) -> None:
         ...
 
-    def train(self, data) -> None:
-        self.mdl = self.mdl.fit(data.X_train, data.get_y_train())
+    def train(self, data: TrainingData) -> None:
+        self.mdl = self.mdl.fit(data.get_X_test(), data.get_y_train())
         print("training ...")
 
     def predict(self, data) -> None:

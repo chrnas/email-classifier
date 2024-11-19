@@ -130,8 +130,8 @@ class Client:
             except SystemExit:
                 # argparse throws a SystemExit exception if parsing fails, we'll catch it to keep the loop running
                 continue
-            except Exception as e:
-                print(f"Error: {e}")
+            #except Exception as e:
+            #    print(f"Error: {e}")
 
     def handle_input(self, args) -> bool:
         match args.command:
@@ -163,7 +163,7 @@ class Client:
                 self.command_invoker.execute()
             case "add_emails":
                 command = AddEmailsCommand(
-                    email_classifier=self.email_classifiers[0])
+                    email_classifier=self.email_classifiers[0], path=args.path)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
             case "classify_emails":

@@ -57,7 +57,7 @@ class EmailClassifier():
         context.choose_strat(RandomForest(
 
             'RandomForest', self.data.X_test, self.data.y))
-        context.train(self.data)
+        context.train()
 
 
 
@@ -65,7 +65,7 @@ class EmailClassifier():
         context.predict()
         self.context = context
         #self.model.predict(self.data)
-
+        context.print_results()
 
     def printModelEvaluation(self):
         self.context.print_results()

@@ -47,11 +47,14 @@ class ClassifyEmailCommand(Command):
 
 
 class AddEmailsCommand(Command):
-    def __init__(self, email_classifier: EmailClassifierFacade):
+    def __init__(self, email_classifier: EmailClassifierFacade, path: str):
         self.email_classifier = email_classifier
+        self.path = path
 
     def execute(self):
-        self.email_classifier.add_emails()
+        path = "../data/"+str(self.path)
+        self.email_classifier.add_emails(path)
+        print(f'Added emails to email classifier:{self.email_classifier.name}')
 
     def undo():
         print("There is no undo operation for the add emails command.")
@@ -101,7 +104,7 @@ class ListEmailClassifiersCommand(Command):
     def execute(self):
         print("Email classifiers:")
         for email_classifier in self.email_classifiers:
-            print(email_classifier.name)
+            print(email_classifier)
 
     def undo(self):
         os.system('cls')

@@ -7,6 +7,7 @@ from feature_engineering.wordcount import WordcountEmbeddings
 from models.randomforest import RandomForest
 from training_data import TrainingData
 from data_preparation.simple_data_preprocessor_decorator_factory import SimpleDataPreProcessorDecoratorFactory
+from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
 
 # Code will start executing from following line
 if __name__ == '__main__':
@@ -25,7 +26,7 @@ if __name__ == '__main__':
     df = data_set_loader.read_data(path)
     df = data_set_loader.renameColumns(df)
 
-    feature = "translation"
+    feature = "deduplication"
     processor = DataProcessor()
     processor = SimpleDataPreProcessorDecoratorFactory().create_data_preprocessor(
         processor, feature)
@@ -33,22 +34,17 @@ if __name__ == '__main__':
     df = processor.process(df)
 
     # feature engineering
-    base_embeddings = TfidfEmbeddings(df)
-    base_embeddings.create_embeddings()
-    X = base_embeddings.get_embeddings()
+    base_embeddings = SentenceTransformerEmbeddings()
+    X = base_embeddings.create_embeddings(df)
 
     # modelling
     data = TrainingData(X, df)
-    context = ContextClassifier(RandomForest(
-        'RandomForest', data.get_X_test(), data.get_type()))
-
-    context.train(data)
+    context = ContextClassifier(data)
 
     context.choose_strat(RandomForest(
         'RandomForest', data.get_X_test(), data.get_type()))
-    context.train(data)
-
+    context.train()
     # model.train(data)
-    context.predict(data)
+    context.predict()
     # model.predict(data)
-    context.print_results(data)
+    context.print_results()

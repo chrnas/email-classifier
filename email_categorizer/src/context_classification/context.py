@@ -10,13 +10,13 @@ class ContextClassifier():
         self.modelstrat = None
         self.data =data
 
-    def choose_strat(self,modelstrat: BaseModel):
+    def choose_strat(self, modelstrat: BaseModel):
         self.modelstrat = modelstrat
         
-    def train(self) :
+    def train(self):
         self.modelstrat.train(self.data)
     
-    def predict(self) :
+    def predict(self):
         self.modelstrat.predict(self.data)
       
     def print_results(self):
