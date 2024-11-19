@@ -74,9 +74,7 @@ class EmailClassifierFacade():
         data_set_loader = DatasetLoader()
         self.df = data_set_loader.read_data(path)
         self.df = data_set_loader.renameColumns(self.df)
-        data_preprocessor = DataProcessor()
-        #data_preprocessor = TranslatorDecorator(data_preprocessor)
-        self.df = data_preprocessor.process(self.df)
+        self.df = self.data_preprocessor.process(self.df)
         # print(self.data_preprocessor)
         # self.df = self.data_preprocessor.process(df)  # This doesnt work currently for unknown reason
 
