@@ -16,11 +16,17 @@ class ContextClassifier():
     def train(self):
         self.modelstrat.train(self.data)
     
+<<<<<<< HEAD
     def predict(self):
         self.modelstrat.predict(self.data)
+=======
+    def predict(self, data) :
+        self.modelstrat.predict(data)
+>>>>>>> 2fa899b6374f26ebec90937f449cd6d90a2cf7ae
       
-    def print_results(self):
-        self.modelstrat.print_results(self.data)
+    def print_results(self,data):
+        self.modelstrat.print_results(data)
     
-
+    def predict_emails(self, emails_to_predict):
+        self.modelstrat.predict_emails(emails_to_predict)  
   
