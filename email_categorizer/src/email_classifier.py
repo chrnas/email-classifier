@@ -32,6 +32,12 @@ class EmailClassifier():
         classification = self.model.use_model(email)
         print("Email classified")
         return classification
+    
+    def transform_text (self, config,csv_file):
+        embedding_t = config["embedding_types"]
+        preprocessing_t = config["preprocessing_steps"]
+        df_input = pd.read_csv(csv_file)
+        
 
     def train_model(self, path: str) -> None:
         # load the data
@@ -62,10 +68,10 @@ class EmailClassifier():
 
 
         #self.model.train(self.data)
-        context.predict()
+        context.predict(self.data)
         self.context = context
         #self.model.predict(self.data)
 
 
     def printModelEvaluation(self):
-        self.context.print_results()
+        self.context.print_results(self.data)
