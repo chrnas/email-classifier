@@ -64,13 +64,16 @@ class EmailClassifier():
             'RandomForest', self.data.X_test, self.data.y))
         context.train(self.data)
 
-
-
+        input_path= "email_categorizer/data/TestEmails.csv"
+        df_input = self.data_set_loader.read_data(input_path)
+        df_input = self.data_set_loader.renameColumns(df_input)
         #self.model.train(self.data)
-        context.predict(self.data)
+        #context.predict(self.data)
+        context.predict(df_input)
         self.context = context
         #self.model.predict(self.data)
+        self.context.print_results(df_input)
 
 
     def printModelEvaluation(self):
-        self.context.print_results(self.data)
+        self.context.print_results(self.df)
