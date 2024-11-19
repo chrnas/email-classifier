@@ -16,13 +16,8 @@ class ContextClassifier():
     def train(self):
         self.modelstrat.train(self.data)
     
-<<<<<<< HEAD
-    def predict(self):
-        self.modelstrat.predict(self.data)
-=======
     def predict(self, data) :
         self.modelstrat.predict(data)
->>>>>>> 2fa899b6374f26ebec90937f449cd6d90a2cf7ae
       
     def print_results(self,data):
         self.modelstrat.print_results(data)

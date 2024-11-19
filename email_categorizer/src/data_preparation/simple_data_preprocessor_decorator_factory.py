@@ -1,5 +1,5 @@
 import pandas as pd
-from .data_processor_flex import (
+from .data_processor import (
     NoiseRemovalDecorator,
     TranslatorDecorator,
     DeDuplicationDecorator,

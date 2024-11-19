@@ -4,15 +4,10 @@ from context_classification.context import ContextClassifier
 from data_preparation.dataset_loader import DatasetLoader
 import pandas as pd
 from context_classification.context import ContextClassifier
-from feature_engineering.sentence_transformer import SentenceTransformerEmbeddings
-from data_preparation.data_preprocessor_factory import DataPreProcessorFactory
-from data_preparation.data_processor_flex import DataProcessor, DataProcessorDecorator, DeDuplicationDecorator, NoiseRemovalDecorator, TranslatorDecorator, UnicodeConversionDecorator
+from data_preparation.data_processor import DataProcessor
 from training_data import TrainingData
-from models.randomforest import RandomForest
 from models.model_factory import ModelFactory
-from models.base import BaseModel
-import random
-from feature_engineering.simple_embeddings_factory import SimpleEmbeddingsFactory
+
 
 
 class EmailClassifierFacade():
