@@ -9,9 +9,9 @@ class SimpleEmbeddingsFactory:
     def create_embeddings(embedding_type, df: pd.DataFrame):
 
         if embedding_type == "sentence_transformer":
-            return SentenceTransformerEmbeddings(df)
+            return SentenceTransformerEmbeddings()
         elif embedding_type == "tfidf":
-            return TfidfEmbeddings(df)
+            return TfidfEmbeddings()
         #elif embedding_type == "tfidf-sentence_transformer":
         #    raise TfidfSentenceEmbeddings(df)
         else:

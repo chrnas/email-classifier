@@ -91,9 +91,9 @@ class EmailClassifierFacade():
         model = ModelFactory().create_model(
             "randomforest", self.data.get_X_test(), self.data.get_type())
         self.model_context.choose_strat(model)
-        self.model_context.train(self.data)
-        self.model_context.predict(self.data)
-        self.model_context.print_results(self.data)
+        self.model_context.train()
+        self.model_context.predict()
+        self.model_context.print_results()
 
     def display_evaluation(self):
-        self.model_context.print_results(self.data)
+        self.model_context.print_results()
