@@ -18,4 +18,14 @@ class SentenceTransformerEmbeddings(BaseEmbeddings):
         return X
 
     def create_classification_embeddings(self, df):
-        pass
+        """Converts text data from "Interaction content" and "Ticket Summary" columns into SentenceTransformer embeddings, then concatenates them into a single feature matrix."""
+        model = SentenceTransformer('all-MiniLM-L6-v2')
+
+        # Generate embeddings for both columns
+        x1 = model.encode(df["Interaction content"].tolist())
+        x2 = model.encode(df["Ticket Summary"].tolist())
+
+        # Concatenate embeddings along the second axis
+        X = np.array(np.concatenate((x1, x2), axis=1))
+
+        return X

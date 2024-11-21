@@ -14,6 +14,9 @@ class DataProcessorBase(ABC):
     def process(self, df: pd.DataFrame):
         """Process the DataFrame and return the processed result."""
         ...
+        
+    def __str__(self):
+        return "DataProcessor"
 
 # Concrete Data Processor
 
@@ -22,6 +25,9 @@ class DataProcessor(DataProcessorBase):
     def process(self, df: pd.DataFrame):
         """Return the DataFrame as is (no processing)."""
         return df
+    
+    def __str__(self):
+        return super().__str__() + ": features: base"
 
 # Decorator base class
 
@@ -35,20 +41,32 @@ class DataProcessorDecorator(DataProcessorBase):
         """Delegate the processing to the wrapped processor."""
         return self._processor.process(df)
 
+    def __str__(self):
+        return str(self._processor)
+
 # Concrete decorator for deduplication
 
 
 class DeDuplicationDecorator(DataProcessorDecorator):
+    
+    def __str__(self):
+        return f"{self._processor}, deduplication"
+    
     def process(self, df: pd.DataFrame):
         """Remove rows with empty or NaN values in column 'y'."""
         df = self._processor.process(df)
         df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
         return df
 
+
 # Concrete decorator for noise removal
 
 
 class NoiseRemovalDecorator(DataProcessorDecorator):
+      
+    def __str__(self):
+        return f"{self._processor}, noise_removal"
+    
     def process(self, df: pd.DataFrame):
         """Remove noise patterns from 'Ticket Summary' and 'Interaction content'."""
         df = self._processor.process(
@@ -96,6 +114,10 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
 
 
 class TranslatorDecorator(DataProcessorDecorator):
+    
+    def __str__(self):
+        return f"{self._processor}, translation"
+    
     def process(self, df: pd.DataFrame):
         """Translate 'Ticket Summary' from its original language to English."""
         df = self._processor.process(df)
@@ -140,6 +162,10 @@ class TranslatorDecorator(DataProcessorDecorator):
 
 
 class UnicodeConversionDecorator(DataProcessorDecorator):
+    
+    def __str__(self):
+        return f"{self._processor}, unicode_conversion"
+    
     def process(self, df: pd.DataFrame):
         """Convert 'Interaction Content' and 'Ticket Summary' to Unicode."""
         df = self._processor.process(df)
