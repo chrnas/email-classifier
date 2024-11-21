@@ -35,8 +35,4 @@ class BaseModel(ABC):
         for email, prediction in zip(email_contents, predictions):
             results.append((prediction, email))
         return results
-        """print(predictions)
-        index = 0
-        for prediction in predictions:
-            index += 1
-            print(f"Prediction for email {index}:{prediction}")"""
+    

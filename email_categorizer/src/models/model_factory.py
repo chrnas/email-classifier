@@ -9,10 +9,10 @@ class ModelFactory:
     def create_model(model_type: str, embeddings: np.ndarray, y: np.ndarray):
 
         if model_type == "bayes":
-            return Bayes(model_type, embeddings, y)
+            return Bayes(model_type)
         elif model_type == "randomforest":
-            return RandomForest(model_type, embeddings, y)
+            return RandomForest(model_type)
         elif model_type == "svc":
-            return SVCModel(model_type, embeddings, y)
+            return SVCModel(model_type)
         else:
             raise ValueError(f"Unknown algorithm: {model_type}.")
