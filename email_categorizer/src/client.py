@@ -11,6 +11,7 @@ from command import ChangeStrategyCommand, ChooseEmailClassifierCommand, \
     ListEmailClassifiersCommand, AddPreprocessingCommand, \
     TrainModelCommand, ClassifyEmailCommand
 from email_classifier_factory import EmailClassifierFactory
+from classifier_config_singleton import ClassifierConfigSingleton
 
 
 class Client:
@@ -18,11 +19,13 @@ class Client:
     email_classifiers: list[EmailClassifierFacade]
     data_set_loader: DatasetLoader
     command_invoker: CommandInvoker
+    config_manager: ClassifierConfigSingleton
 
     def __init__(self):
         self.data_set_loader = DatasetLoader()
         self.command_invoker = CommandInvoker()
         self.email_classifiers: list[EmailClassifierFacade] = []
+        self.config_manager = ClassifierConfigSingleton()
 
     def create_parser(self) -> argparse.ArgumentParser:
         parser = argparse.ArgumentParser(
@@ -88,9 +91,9 @@ class Client:
     def create_completer(self) -> NestedCompleter:
 
         # Extract method names and their possible settings
-        features_dict = ['deduplication', 'unicode_conversion', 'noise_removal', 'translation']
-        model_dict = ['bayes', 'randomforest', 'svc']
-        embeddings_dict = ['tfidf', 'wordcount', 'sentence_transformer']
+        features_dict = self.config_manager.preprocessing_features
+        model_dict = self.config_manager.models
+        embeddings_dict = self.config_manager.embeddings
         completer_dict = {
             'create_email_classifier AppGallery.csv tfidf randomforest emailclassifiertest': None,
             'test': {emailclassifier.name: None for emailclassifier in self.email_classifiers},

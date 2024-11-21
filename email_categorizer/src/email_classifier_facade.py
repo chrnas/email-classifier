@@ -9,7 +9,6 @@ from training_data import TrainingData
 from models.model_factory import ModelFactory
 
 
-
 class EmailClassifierFacade():
     df: pd.DataFrame
     emails: pd.DataFrame
@@ -71,15 +70,14 @@ class EmailClassifierFacade():
         self.df = self.data_preprocessor.process(self.df)
 
         # feature engineering
-        #self.feature_engineer = SimpleEmbeddingsFactory().create_embeddings(
+        # self.feature_engineer = SimpleEmbeddingsFactory().create_embeddings(
         #    "sentence_transformer", self.df
-        #)
+        # )
         X = self.base_embeddings.create_training_embeddings(self.df)
-        
 
         # modelling
         self.data = TrainingData(X, self.df)
-        #use model name here or something similar
+        # use model name here or something similar
         model = ModelFactory().create_model(
             "randomforest", self.data.get_X_test(), self.data.get_type())
         self.model_context.choose_strat(model)
