@@ -7,6 +7,8 @@ from models.model_factory import ModelFactory
 from feature_engineering.embeddings_factory import EmbeddingsFactory
 import pandas as pd
 from training_data import TrainingData
+from observing.statistics_collector import StatCollector
+from observing.result_displayer import ResultDisplayer
 
 
 class EmailClassifierFactory:
@@ -30,10 +32,15 @@ class EmailClassifierFactory:
         model = ModelFactory().create_model(
             model_type, data.X_test, data.y)
         strategy_context = ContextClassifier(data)
+        stat_collector = StatCollector()
+        strategy_context.subscribe(stat_collector)
+        result_displayer = ResultDisplayer()
+        strategy_context.subscribe(result_displayer)
         strategy_context.choose_strat(model)
         strategy_context.train()
         strategy_context.predict()
-        strategy_context.print_results()
+        strategy_context.classification_report()
+        # strategy_context.print_results()
         email_classifier = EmailClassifierFacade(
             feature_engineer,
             data_processor,

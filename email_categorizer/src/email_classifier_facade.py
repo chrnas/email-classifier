@@ -49,7 +49,8 @@ class EmailClassifierFacade():
     def classify_emails(self):
         df = self.data_preprocessor.process(self.emails)
         X = self.base_embeddings.create_classification_embeddings(df)
-        self.model_context.predict_emails(X)
+        char_limit = 200
+        self.model_context.predict_emails(X, df["Interaction content"].apply(lambda x: x[:char_limit] + ' ...' if len(x) > char_limit else x))
 
     def change_strategy(self, model_type: str):
         model = ModelFactory().create_model(

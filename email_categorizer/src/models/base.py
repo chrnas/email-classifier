@@ -34,10 +34,10 @@ class BaseModel(ABC):
         self.__dict__.update(values)
         return self
 
-    def predict_emails(self, emails_to_predict):
-        predictions = self.mdl.predict(emails_to_predict)
+    def predict_emails(self, email_embeddings, email_contents):
+        predictions = self.mdl.predict(email_embeddings)
         results = []
-        for email, prediction in zip(emails_to_predict, predictions):
+        for email, prediction in zip(email_contents, predictions):
             results.append((prediction, email))
         return results
         """print(predictions)

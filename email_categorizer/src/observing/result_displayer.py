@@ -16,5 +16,7 @@ class ResultDisplayer(Observer):
 
     def display(self):
         # Print collected results
+        print("\n")
         for prediction, email_content in self.predictions:
             print(f"Prediction: {prediction} | Email: {email_content}")
+            print("\n")
