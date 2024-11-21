@@ -32,8 +32,8 @@ class EmailClassifier():
         classification = self.model.use_model(email)
         print("Email classified")
         return classification
-    
-    def transform_text (self, config,csv_file):
+
+    def transform_text(self, config, csv_file):
         embedding_t = config["embedding_types"]
         preprocessing_t = config["preprocessing_steps"]
         df_input = pd.read_csv(csv_file)
@@ -60,15 +60,13 @@ class EmailClassifier():
         context = ContextClassifier(self.data)
         context.choose_strat(RandomForest('RandomForest'))
         context.train()
-        #self.model.train(self.data)
+        # self.model.train(self.data)
         context.predict(self.data)
-        #self.model.predict(self.data)
+        # self.model.predict(self.data)
         context.print_results()
         self.context = context
 
-
-
-        input_path= "/Users/patrickvorreiter/Documents/Studium/2024 Wintersemester/Systems Analysis and Design/email-categorizer/email_categorizer/data/TestEmails.csv"
+        input_path = "/Users/patrickvorreiter/Documents/Studium/2024 Wintersemester/Systems Analysis and Design/email-categorizer/email_categorizer/data/TestEmails.csv"
         df_input = self.data_set_loader.read_data(input_path)
         df_input = self.data_set_loader.renameColumns(df_input)
         # preproccess the data
@@ -82,7 +80,6 @@ class EmailClassifier():
         print("_____BEFORE________")
         self.context.predict_emails(X_input)
         print("_____AFTER________")
-        
 
     def printModelEvaluation(self):
         self.context.print_results(self.data)

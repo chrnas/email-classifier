@@ -1,8 +1,11 @@
 from sklearn.naive_bayes import GaussianNB
 from .base import BaseModel
 
+
 class Bayes(BaseModel):
-    def __init__(self,
-                 model_name: str) -> None:
-        super().__init__(model_name)
+    def __init__(self) -> None:
+        super().__init__()
         self.mdl = GaussianNB()
+
+    def __str__(self) -> str:
+        return "Bayes"
