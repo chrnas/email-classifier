@@ -9,10 +9,10 @@ class ModelFactory:
     def create_model(model_type: str):
 
         if model_type == "bayes":
-            return Bayes(model_type)
+            return Bayes()
         elif model_type == "randomforest":
-            return RandomForest(model_type)
+            return RandomForest()
         elif model_type == "svc":
-            return SVCModel(model_type)
+            return SVCModel()
         else:
             raise ValueError(f"Unknown algorithm: {model_type}.")

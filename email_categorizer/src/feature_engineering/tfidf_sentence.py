@@ -12,7 +12,7 @@ class TfidfSentenceEmbeddings(BaseEmbeddings):
         self.vectorizer_summary = TfidfVectorizer(
             max_features=2000, min_df=4, max_df=0.90)
         self.model = SentenceTransformer('all-MiniLM-L6-v2')
-        
+
     def __str__(self) -> str:
         return "tf-idf-sentence_transformer"
 

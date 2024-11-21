@@ -1,12 +1,10 @@
 from abc import ABC, abstractmethod
 from sklearn.metrics import classification_report, confusion_matrix
 from training_data import TrainingData
-import numpy as np
+
 
 class BaseModel(ABC):
-    def __init__(self,
-                 model_name: str) -> None:
-        self.model_name = model_name
+    def __init__(self) -> None:
         self.predictions = None
 
     def train(self, data: TrainingData) -> None:
@@ -16,8 +14,9 @@ class BaseModel(ABC):
         predictions = self.mdl.predict(data.X_test)
         self.predictions = predictions
 
-    def classification_report(self, data) : 
-        report = classification_report(data.y_test, self.predictions, output_dict=True)
+    def classification_report(self, data):
+        report = classification_report(
+            data.y_test, self.predictions, output_dict=True)
         return report
 
     def print_results(self, data):
@@ -31,4 +30,3 @@ class BaseModel(ABC):
         for email, prediction in zip(email_contents, predictions):
             results.append((prediction, email))
         return results
-    

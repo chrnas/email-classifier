@@ -34,7 +34,6 @@ class EmailClassifierFacade():
         self.emails: pd.DataFrame = None
 
     def __eq__(self, other):
-        # Define equality based on name and age
         return self.name == other.name
 
     def __str__(self) -> str:
@@ -49,7 +48,8 @@ class EmailClassifierFacade():
         df = self.data_preprocessor.process(self.emails)
         X = self.base_embeddings.create_classification_embeddings(df)
         char_limit = 200
-        self.model_context.predict_emails(X, df["Interaction content"].apply(lambda x: x[:char_limit] + ' ...' if len(x) > char_limit else x))
+        self.model_context.predict_emails(X, df["Interaction content"].apply(
+            lambda x: x[:char_limit] + ' ...' if len(x) > char_limit else x))
 
     def change_strategy(self, model_type: str):
         model = ModelFactory().create_model(model_type)
@@ -59,24 +59,18 @@ class EmailClassifierFacade():
         self.data_preprocessor = SimpleDataPreProcessorDecoratorFactory().create_data_preprocessor(
             self.data_preprocessor, feature)
 
-        print("Processor:", self.data_preprocessor)
+        print("Processor updated to:", self.data_preprocessor)
 
     def train_model(self, path: str):
-        # load the data
+        # Preprocess data
         data_set_loader = DatasetLoader()
         self.df = data_set_loader.read_data(path)
         self.df = data_set_loader.renameColumns(self.df)
         self.df = self.data_preprocessor.process(self.df)
-
-        # feature engineering
-        # self.feature_engineer = SimpleEmbeddingsFactory().create_embeddings(
-        #    "sentence_transformer", self.df
-        # )
         X = self.base_embeddings.create_training_embeddings(self.df)
 
         # modelling
         self.data = TrainingData(X, self.df)
-        # use model name here or something similar
         model = ModelFactory().create_model("randomforest")
         self.model_context.choose_strat(model)
         self.model_context.train()

@@ -1,8 +1,9 @@
 from .observe import Observer
 from context_classification.context import ContextClassifier
 
+
 class StatCollector(Observer):
-    
+
     def __init__(self):
         self.statistics = None
 

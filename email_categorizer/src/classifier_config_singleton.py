@@ -26,7 +26,7 @@ class ClassifierConfigSingleton(object):
                 'embedding': 'tfidf',
                 'model': 'randomforest'
             }
-            
+
             cls._instance.data_folder_path = "../data/"
 
             cls._instance.appgallery_input_columns = {

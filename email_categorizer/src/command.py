@@ -5,8 +5,6 @@ from email_classifier_factory import EmailClassifierFactory
 from data_preparation.dataset_loader import DatasetLoader
 from models.model_factory import ModelFactory
 
-# Abstract Command interface
-
 
 class CommandInvoker:
     def __init__(self):
@@ -147,7 +145,7 @@ class ChangeStrategyCommand(Command):
     def __init__(self, email_classifier: EmailClassifierFacade, model_type: str):
         self.email_classifier = email_classifier
         self.model_type = model_type
-        #self.old_model = email_classifier.model_context.modelstrat
+        # self.old_model = email_classifier.model_context.modelstrat
 
     def execute(self):
         self.email_classifier.change_strategy(self.model_type)
@@ -155,7 +153,7 @@ class ChangeStrategyCommand(Command):
 
     def undo(self):
         print("Undoing the previous change strategy command.")
-        #self.email_classifier.model_context.change_strategy(
+        # self.email_classifier.model_context.change_strategy(
         #    self.email_classifier.old_model)
 
 

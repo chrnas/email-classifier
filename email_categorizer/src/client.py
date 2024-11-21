@@ -32,17 +32,16 @@ class Client:
             description="CLI for estimating positions based on sound files.")
         subparsers = parser.add_subparsers(dest='command')
 
-        # Test command
         subparsers.add_parser(
             'test', help='Execute a test command to verify CLI functionality.')
 
-        # PosList command
         add_email_parser = subparsers.add_parser(
             'add_emails', help='Classify email comand.')
         add_email_parser.add_argument('path', help='Path to the email files.')
-        classify_email_parser = subparsers.add_parser(
+
+        subparsers.add_parser(
             'classify_emails', help='Classify email comand.')
-        # Create email classifier command
+
         create_email_classifier_parser = subparsers.add_parser(
             'create_email_classifier', help='Create an email classifier.')
         create_email_classifier_parser.add_argument(
@@ -51,40 +50,39 @@ class Client:
             'embedding', help='Embeddings type.')
         create_email_classifier_parser.add_argument(
             'model', help='Classification algorithm.')
-        create_email_classifier_parser.add_argument('name', help='Name to the email classifier.')
+        create_email_classifier_parser.add_argument(
+            'name', help='Name to the email classifier.')
 
-        # Choose email classifier command
         choose_email_classifier = subparsers.add_parser(
             'choose_email_classifier', help='Choose email classifier.')
         choose_email_classifier.add_argument(
             'name', help='Name to the email classifier.')
 
-        # Change Strategy command
         change_strategy_parser = subparsers.add_parser(
             'change_strategy', help='Change strategy.')
         change_strategy_parser.add_argument(
             'strategy', help='Change strategy to bayes.')
-        # Add preprocessing command
+
         add_pre_processing_parser = subparsers.add_parser(
             'add_preprocessing', help='Add preprocessing.')
         add_pre_processing_parser.add_argument(
             'feature', help='Add translation feature.')
-        # Add preprocessing command
-        train_model = subparsers.add_parser(
+
+        train_model_parser = subparsers.add_parser(
             'train_model', help='Train model.')
-        train_model.add_argument(
+        train_model_parser.add_argument(
             'path', help='Path for training data.')
 
-        # Display Evaluation command
-        display_evaluation_parser = subparsers.add_parser(
+        subparsers.add_parser(
             'display_evaluation', help='Display the evaluation of the current positioning method.')
-        # List email calssifiers command
-        list_email_classifiers_parser = subparsers.add_parser(
+
+        subparsers.add_parser(
             'list_email_classifiers', help='List email classifiers.')
-        # Exit command
-        undo_parser = subparsers.add_parser('undo', help='Undo the last command.')
-        
-        exit_parser = subparsers.add_parser('exit', help='Exit the CLI.')
+
+        subparsers.add_parser(
+            'undo', help='Undo the last command.')
+
+        subparsers.add_parser('exit', help='Exit the CLI.')
 
         return parser
 
@@ -122,7 +120,7 @@ class Client:
 
         while True:
             completer = self.create_completer()
-            try:            
+            try:
                 input_str = prompt("> ", completer=completer, history=history)
                 if input_str.strip().lower() == 'exit':
                     print("Exiting CLI.")
@@ -133,17 +131,19 @@ class Client:
             except SystemExit:
                 # argparse throws a SystemExit exception if parsing fails, we'll catch it to keep the loop running
                 continue
-            except Exception as e:
+            except Exception as e:  # catch errror and display it
                 print(f"Error: {e}")
 
     def handle_input(self, args) -> bool:
         match args.command:
+
             case "test":
                 print("Args are:")
                 for arg in vars(args):
                     if arg != 'command':
                         print(f"{arg}: {getattr(args, arg)}")
                 print("test command executed")
+
             case "create_email_classifier":
                 command = CreateEmailClassifierCommand(
                     email_classifiers=self.email_classifiers,
@@ -154,21 +154,25 @@ class Client:
                 )
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "list_email_classifiers":
                 command = ListEmailClassifiersCommand(
                     email_classifiers=self.email_classifiers)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "choose_email_classifier":
                 command = ChooseEmailClassifierCommand(
                     email_classifiers=self.email_classifiers, name=args.name)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "add_emails":
                 command = AddEmailsCommand(
                     email_classifier=self.email_classifiers[0], path=args.path)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "classify_emails":
                 command = ClassifyEmailCommand(
                     email_classifier=self.email_classifiers[0])
@@ -177,29 +181,38 @@ class Client:
 
             case "change_strategy":
                 command = ChangeStrategyCommand(
-                    email_classifier=self.email_classifiers[0], model_type=args.strategy)
+                    email_classifier=self.email_classifiers[0],
+                    model_type=args.strategy)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "add_preprocessing":
                 command = AddPreprocessingCommand(
-                    email_classifier=self.email_classifiers[0], feature=args.feature)
+                    email_classifier=self.email_classifiers[0],
+                    feature=args.feature)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "train_model":
                 command = TrainModelCommand(
-                    email_classifier=self.email_classifiers[0], path=args.path)
+                    email_classifier=self.email_classifiers[0],
+                    path=args.path)
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "display_evaluation":
                 command = DisplayEvaluationCommand(
                     email_classifier=self.email_classifiers[0])
                 self.command_invoker.set_command(command)
                 self.command_invoker.execute()
+
             case "undo":
                 self.command_invoker.undo()
+
             case "exit":
                 print("Exiting CLI.")
                 exit(0)
+
             case _:
                 print("Unknown command")
         return False

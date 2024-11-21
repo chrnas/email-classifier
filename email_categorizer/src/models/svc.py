@@ -7,3 +7,6 @@ class SVCModel(BaseModel):
                  model_name: str) -> None:
         super().__init__(model_name)
         self.mdl = SVC()
+
+    def __str__(self) -> str:
+        return "Bayes"

@@ -20,8 +20,6 @@ class EmailClassifierFactory:
         model_type: str,
         name: str
     ):
-        # data_processor = DataPreProcessorFactory().create_data_preprocessor(
-        #    df, pre_processing_features)
         data_processor = DataProcessor()
         df = data_processor.process(df)
         feature_engineer = EmbeddingsFactory().create_embeddings(
@@ -39,7 +37,6 @@ class EmailClassifierFactory:
         strategy_context.train()
         strategy_context.predict()
         strategy_context.classification_report()
-        # strategy_context.print_results()
         email_classifier = EmailClassifierFacade(
             feature_engineer,
             data_processor,
