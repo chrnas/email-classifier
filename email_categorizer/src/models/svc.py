@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.svm import SVC
 from .base import BaseModel
 
-class SVC(BaseModel):
+class SVCModel(BaseModel):
     def __init__(self,
                  model_name: str,
                  embeddings: np.ndarray,
