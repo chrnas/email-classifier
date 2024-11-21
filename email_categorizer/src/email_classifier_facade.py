@@ -38,7 +38,7 @@ class EmailClassifierFacade():
         return self.name == other.name
 
     def __str__(self) -> str:
-        return f"Name:{self.name}, Preprocess Features:{self.data_preprocessor}, Embeddings:{self.base_embeddings}, Model:{self.model_context}"
+        return f"Name:{self.name}\nPreprocess Features:{self.data_preprocessor}\nEmbeddings:{self.base_embeddings}\nModel:{self.model_context.modelstrat}\n\n"
 
     def add_emails(self, path):
         data_set_loader = DatasetLoader()

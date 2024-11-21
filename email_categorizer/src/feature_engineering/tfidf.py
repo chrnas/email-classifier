@@ -14,6 +14,9 @@ class TfidfEmbeddings(BaseEmbeddings):
         self.vectorizer_summary = TfidfVectorizer(
             max_features=2000, min_df=4, max_df=0.90)
 
+    def __str__(self) -> str:
+        return "tf-idf"
+
     def create_training_embeddings(self, df):
         """Converts text data from "Interaction content" and "Ticket Summary" columns into TF-IDF feature vectors, then concatenates them into a single feature matrix."""
         x1 = self.vectorizer_interaction.fit_transform(df["Interaction content"]).toarray()
