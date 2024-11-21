@@ -2,6 +2,7 @@ from .sentence_transformer import SentenceTransformerEmbeddings
 from .tfidf import TfidfEmbeddings
 from .word2vec import Word2VecEmbeddings
 import pandas as pd
+from .tfidf_sentence import TfidfSentenceEmbeddings
 
 
 class EmbeddingsFactory:
@@ -12,7 +13,7 @@ class EmbeddingsFactory:
             return SentenceTransformerEmbeddings()
         elif embedding_type == "tfidf":
             return TfidfEmbeddings()
-        #elif embedding_type == "tfidf-sentence_transformer":
-        #    raise TfidfSentenceEmbeddings(df)
+        elif embedding_type == "tfidf-sentence_transformer":
+            raise TfidfSentenceEmbeddings()
         else:
             raise ValueError(f"Unknown embedding type: {embedding_type}. Choose between 'tfidf', 'word2vec' or 'sentence_transformer'.")
