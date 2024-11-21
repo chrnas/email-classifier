@@ -6,7 +6,7 @@ from .svc import SVCModel
 
 class ModelFactory:
     @staticmethod
-    def create_model(model_type: str, embeddings: np.ndarray, y: np.ndarray):
+    def create_model(model_type: str):
 
         if model_type == "bayes":
             return Bayes(model_type)

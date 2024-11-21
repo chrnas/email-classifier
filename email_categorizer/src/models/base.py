@@ -17,13 +17,13 @@ class BaseModel(ABC):
         self.predictions = predictions
 
     def classification_report(self, data) : 
-        report = classification_report(data.get_y_test(), self.predictions, output_dict=True)
+        report = classification_report(data.y_test, self.predictions, output_dict=True)
         return report
 
     def print_results(self, data):
         print(self.predictions)
-        print(classification_report(data.get_y_test(), self.predictions))
-        print(confusion_matrix(data.get_y_test(), self.predictions))
+        print(classification_report(data.y_test, self.predictions))
+        print(confusion_matrix(data.y_test, self.predictions))
 
     def predict_emails(self, email_embeddings, email_contents):
         predictions = self.mdl.predict(email_embeddings)

@@ -29,8 +29,7 @@ class EmailClassifierFactory:
         )
         X = feature_engineer.create_training_embeddings(df)
         data = TrainingData(X, df)
-        model = ModelFactory().create_model(
-            model_type, data.X_test, data.y)
+        model = ModelFactory().create_model(model_type)
         strategy_context = ContextClassifier(data)
         stat_collector = StatCollector()
         strategy_context.subscribe(stat_collector)
