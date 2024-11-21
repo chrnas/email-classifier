@@ -5,12 +5,8 @@ import numpy as np
 
 class BaseModel(ABC):
     def __init__(self,
-                 model_name: str,
-                 embeddings: np.ndarray,
-                 y: np.ndarray) -> None:
+                 model_name: str) -> None:
         self.model_name = model_name
-        self.embeddings = embeddings
-        self.y = y
         self.predictions = None
 
     def train(self, data: TrainingData) -> None:
