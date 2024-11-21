@@ -14,6 +14,9 @@ class BaseModel(ABC):
         predictions = self.mdl.predict(data.X_test)
         self.predictions = predictions
 
+    def classification_report(self, data) : 
+        report = classification_report(data.get_y_test(), self.predictions, output_dict=True)
+        return report
 
     def print_results(self, data):
         print(self.predictions)
@@ -32,9 +35,13 @@ class BaseModel(ABC):
         return self
 
     def predict_emails(self, emails_to_predict):
-            predictions = self.mdl.predict(emails_to_predict)
-            print(predictions)
-            index = 0
-            for prediction in predictions:
-                index += 1
-                print(f"Prediction for email {index}:{prediction}")
+        predictions = self.mdl.predict(emails_to_predict)
+        results = []
+        for email, prediction in zip(emails_to_predict, predictions):
+            results.append((prediction, email))
+        return results
+        """print(predictions)
+        index = 0
+        for prediction in predictions:
+            index += 1
+            print(f"Prediction for email {index}:{prediction}")"""
