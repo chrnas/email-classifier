@@ -52,8 +52,7 @@ class EmailClassifierFacade():
         self.model_context.predict_emails(X, df["Interaction content"].apply(lambda x: x[:char_limit] + ' ...' if len(x) > char_limit else x))
 
     def change_strategy(self, model_type: str):
-        model = ModelFactory().create_model(
-            model_type, self.data.get_X_test(), self.data.get_type())
+        model = ModelFactory().create_model(model_type)
         self.model_context.choose_strat(model)
 
     def add_preprocessing(self, feature: str):
@@ -78,8 +77,7 @@ class EmailClassifierFacade():
         # modelling
         self.data = TrainingData(X, self.df)
         # use model name here or something similar
-        model = ModelFactory().create_model(
-            "randomforest", self.data.get_X_test(), self.data.get_type())
+        model = ModelFactory().create_model("randomforest")
         self.model_context.choose_strat(model)
         self.model_context.train()
         self.model_context.predict()
