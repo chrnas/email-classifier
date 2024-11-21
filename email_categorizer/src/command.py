@@ -1,6 +1,5 @@
 import os
 from abc import ABC, abstractmethod
-from data_preparation.simple_data_preprocessor_decorator_factory import SimpleDataPreProcessorDecoratorFactory
 from email_classifier_facade import EmailClassifierFacade
 from email_classifier_factory import EmailClassifierFactory
 from data_preparation.dataset_loader import DatasetLoader
@@ -168,10 +167,6 @@ class AddPreprocessingCommand(Command):
         self.old_pre_processor = email_classifier.data_preprocessor
 
     def execute(self):
-        #self.pre_processing_feature_decorator = SimpleDataPreProcessorDecoratorFactory().create_data_preprocessor(
-        #    self.email_classifier.data_preprocessor, self.feature)
-        #print(f"self pre processing feature: {
-        #      self.pre_processing_feature_decorator}")
         self.email_classifier.add_preprocessing(self.feature)
         print(f"Preprocessing {self.feature} added")
 
