@@ -1,9 +1,7 @@
-
 import numpy as np
 from .bayes import Bayes
 from .randomforest import RandomForest
 from .svc import SVC
-from .random_forest_old import RandomForestOld
 
 
 class ModelFactory:
@@ -16,7 +14,5 @@ class ModelFactory:
             return RandomForest(model_type, embeddings, y)
         elif model_type == "svc":
             return SVC(model_type, embeddings, y)
-        elif model_type == "test_forest":
-            return RandomForestOld(model_type, embeddings, y)
         else:
             raise ValueError(f"Unknown algorithm: {model_type}.")
