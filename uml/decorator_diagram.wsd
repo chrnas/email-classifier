@@ -2,37 +2,40 @@
 !theme mono
 
 class EmailClassifierFacade {
-    ++add_preprocessing(model: Model): void
+    + add_preprocessing(feature: str): void
 }
 
 abstract class DataProcessorBase {
-    - df: pd.DataFrame
-    + process(): pd.DataFrame
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class DataProcessor {
-    + process(): pd.DataFrame
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class DataProcessorDecorator {
     - _processor: DataProcessorBase
-    + process(): pd.DataFrame
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class DeDuplicationDecorator {
-    + process(): pd.DataFrame
+    - _processor: DataProcessorBase
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class NoiseRemovalDecorator {
-    + process(): pd.DataFrame
+    - _processor: DataProcessorBase
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class TranslatorDecorator {
-    + process(): pd.DataFrame
+    - _processor: DataProcessorBase
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class UnicodeConversionDecorator {
-    + process(): pd.DataFrame
+    - _processor: DataProcessorBase
+    + process(df: pd.DataFrame): pd.DataFrame
 }
 
 EmailClassifierFacade o-- DataProcessorBase
