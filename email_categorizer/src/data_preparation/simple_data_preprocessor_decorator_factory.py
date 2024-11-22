@@ -11,7 +11,7 @@ from .data_processor import (
 class SimpleDataPreProcessorDecoratorFactory:
     @staticmethod
     def create_data_preprocessor(processor: DataProcessor, feature: str) -> DataProcessorDecorator:
-
+        """Create and return a decorated DataProcessor based on the specified feature."""
         if feature == "noise_removal":
             return NoiseRemovalDecorator(processor)
         elif feature == "translation":

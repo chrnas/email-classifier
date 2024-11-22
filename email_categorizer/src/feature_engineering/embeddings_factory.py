@@ -9,7 +9,7 @@ from .wordcount import WordcountEmbeddings
 class EmbeddingsFactory:
     @staticmethod
     def create_embeddings(embedding_type, df: pd.DataFrame):
-
+        """Create and return the appropriate embeddings class based on the specified embedding type."""
         if embedding_type == "sentence_transformer":
             return SentenceTransformerEmbeddings()
         elif embedding_type == "tfidf":

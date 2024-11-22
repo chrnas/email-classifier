@@ -8,7 +8,8 @@ class DatasetLoader():
         df = pd.read_csv(path)
         return df
 
-    def renameColumns(self, df: pd.DataFrame):  # "./data/AppGallery.csv"
+    def renameColumns(self, df: pd.DataFrame):
+        """Rename and preprocess columns in the DataFrame for easier access."""
 
         # convert the dtype object to unicode string
         df['Interaction content'] = df['Interaction content'].values.astype(

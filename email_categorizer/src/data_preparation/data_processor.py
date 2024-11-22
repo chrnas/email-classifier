@@ -6,10 +6,9 @@ from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 from tqdm import tqdm
 
-# Base class for Data Processor
-
-
 class DataProcessorBase(ABC):
+    """Base class for Data Processor"""
+
     @abstractmethod
     def process(self, df: pd.DataFrame):
         """Process the DataFrame and return the processed result."""
@@ -18,10 +17,10 @@ class DataProcessorBase(ABC):
     def __str__(self):
         return "DataProcessor"
 
-# Concrete Data Processor
-
 
 class DataProcessor(DataProcessorBase):
+    """Concrete Data Processor"""
+
     def process(self, df: pd.DataFrame):
         """Return the DataFrame as is (no processing)."""
         return df
@@ -29,10 +28,10 @@ class DataProcessor(DataProcessorBase):
     def __str__(self):
         return super().__str__() + ": features: base"
 
-# Decorator base class
-
 
 class DataProcessorDecorator(DataProcessorBase):
+    """Decorator base class"""
+
     def __init__(self, processor: DataProcessorBase):
         """Initialize the decorator with a processor instance."""
         self._processor = processor
@@ -44,10 +43,9 @@ class DataProcessorDecorator(DataProcessorBase):
     def __str__(self):
         return str(self._processor)
 
-# Concrete decorator for deduplication
-
 
 class DeDuplicationDecorator(DataProcessorDecorator):
+    """Concrete decorator for deduplication"""
 
     def __str__(self):
         return f"{self._processor}, deduplication"
@@ -59,10 +57,8 @@ class DeDuplicationDecorator(DataProcessorDecorator):
         return df
 
 
-# Concrete decorator for noise removal
-
-
 class NoiseRemovalDecorator(DataProcessorDecorator):
+    """Concrete decorator for noise removal"""
 
     def __str__(self):
         return f"{self._processor}, noise_removal"
@@ -110,10 +106,9 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
 
         return df
 
-# Concrete decorator for translation
-
 
 class TranslatorDecorator(DataProcessorDecorator):
+    """Concrete decorator for translation"""
 
     def __str__(self):
         return f"{self._processor}, translation"
@@ -158,10 +153,9 @@ class TranslatorDecorator(DataProcessorDecorator):
         df[Config.TICKET_SUMMARY] = text_en_l
         return df
 
-# Concrete decorator for Unicode conversion
-
 
 class UnicodeConversionDecorator(DataProcessorDecorator):
+    """Concrete decorator for Unicode conversion"""
 
     def __str__(self):
         return f"{self._processor}, unicode_conversion"

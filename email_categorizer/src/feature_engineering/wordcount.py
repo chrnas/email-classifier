@@ -12,6 +12,7 @@ class WordcountEmbeddings(BaseEmbeddings):
         self.model = CountVectorizer()
 
     def create_training_embeddings(self, df: pd.DataFrame):
+        """Create training embeddings by fitting the CountVectorizer model on the data and transforming it into feature vectors."""
         self.model.fit(df["Interaction content"].tolist() +
                        df["Ticket Summary"].tolist())
 
@@ -23,7 +24,7 @@ class WordcountEmbeddings(BaseEmbeddings):
         return X
 
     def create_classification_embeddings(self, df: pd.DataFrame):
-
+        """Create classification embeddings by transforming the data using the fitted CountVectorizer model."""
         x1 = self.model.transform(df["Interaction content"].tolist()).toarray()
         x2 = self.model.transform(df["Ticket Summary"].tolist()).toarray()
 

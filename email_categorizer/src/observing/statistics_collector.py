@@ -8,14 +8,15 @@ class StatCollector(Observer):
         self.statistics = None
 
     def update(self, event_type, statistics):
+        """Updates the statistics when the 'evaluating' event occurs."""
         if event_type != 'evaluating':
-            return  # Ignore irrelevant eventspython
+            return
         # Handle relevant event
         self.statistics = statistics
         self.display()
 
     def display(self):
-        # Print collected statistics
+        """Displays the collected statistics."""
         print("\n")
         for email_class, met in self.statistics.items():
             if email_class not in ["accuracy", "macro avg", "weighted avg"]:

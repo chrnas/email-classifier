@@ -8,23 +8,28 @@ class BaseModel(ABC):
         self.predictions = None
 
     def train(self, data: TrainingData) -> None:
+        """Train the model using the provided training data."""
         self.mdl = self.mdl.fit(data.X_train, data.y_train)
 
     def predict(self, data: TrainingData) -> None:
+        """Generate predictions for the test data and store them in the predictions attribute."""
         predictions = self.mdl.predict(data.X_test)
         self.predictions = predictions
 
     def classification_report(self, data: TrainingData):
+        """Generate and return a classification report based on the test data and model predictions."""
         report = classification_report(
             data.y_test, self.predictions, output_dict=True)
         return report
 
     def print_results(self, data: TrainingData):
+        """Print the model predictions, classification report, and confusion matrix for the test data."""
         print(self.predictions)
         print(classification_report(data.y_test, self.predictions))
         print(confusion_matrix(data.y_test, self.predictions))
 
     def predict_emails(self, email_embeddings, email_contents):
+        """Predict the class for each email based on its embeddings and return a list of (prediction, email) pairs."""
         predictions = self.mdl.predict(email_embeddings)
         results = []
         for email, prediction in zip(email_contents, predictions):
