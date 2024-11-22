@@ -45,6 +45,9 @@ class EmailClassifierFacade():
         self.emails = data_set_loader.renameColumns(self.emails)
 
     def classify_emails(self):
+        if self.emails is None:
+            print("Add emails first to classify them.")
+            return
         df = self.data_preprocessor.process(self.emails)
         X = self.base_embeddings.create_classification_embeddings(df)
         char_limit = 200
@@ -73,10 +76,10 @@ class EmailClassifierFacade():
         self.data = TrainingData(X, self.df)
         #model = ModelFactory().create_model("randomforest")
         #self.model_context.choose_strat(model)
+        self.model_context.data = self.data
         self.model_context.train()
         self.model_context.predict()
         self.model_context.classification_report()
-        #self.model_context.print_results()
 
     def display_evaluation(self):
-        self.model_context.print_results()
+        self.model_context.classification_report()

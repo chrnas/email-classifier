@@ -85,7 +85,7 @@ class CreateEmailClassifierCommand(Command):
             self.model,
             self.name
         )
-        self.email_classifiers.append(self.email_classifier)
+        self.email_classifiers.insert(0, self.email_classifier)
         self.created_email_classifier = self.email_classifier
         print('Added Email classifier:', self.created_email_classifier)
 

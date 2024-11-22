@@ -18,11 +18,6 @@ class DataProcessorDecorator {
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
-class DeDuplicationDecorator {
-    - _processor: DataProcessorBase
-    + process(df: pd.DataFrame): pd.DataFrame
-}
-
 class NoiseRemovalDecorator {
     - _processor: DataProcessorBase
     + process(df: pd.DataFrame): pd.DataFrame
@@ -41,7 +36,6 @@ class UnicodeConversionDecorator {
 EmailClassifierFacade o-- DataProcessorBase
 DataProcessorBase <|-- DataProcessor
 DataProcessorBase <|-- DataProcessorDecorator
-DataProcessorDecorator <|-- DeDuplicationDecorator
 DataProcessorDecorator <|-- NoiseRemovalDecorator
 DataProcessorDecorator <|-- TranslatorDecorator
 DataProcessorDecorator <|-- UnicodeConversionDecorator

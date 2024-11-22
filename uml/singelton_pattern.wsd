@@ -10,7 +10,7 @@ class ClassifierConfigSingleton {
     - appgallery_input_columns : Dict
     - appgallery_type_columns : Dict
     + __new__(cls)
-    + preprocessing_features = ['deduplication', 'unicode_conversion', 'noise_removal', 'translation']
+    + preprocessing_features = ['unicode_conversion', 'noise_removal', 'translation']
     + embeddings = ['tfidf', 'wordcount', 'sentence_transformer']
     + models = ['bayes', 'randomforest', 'svc']
     + default_classifier_config = {'preprocessing': [], 'embedding': 'tfidf', 'model': 'randomforest'}

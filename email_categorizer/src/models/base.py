@@ -19,14 +19,9 @@ class BaseModel(ABC):
     def classification_report(self, data: TrainingData):
         """Generate and return a classification report based on the test data and model predictions."""
         report = classification_report(
-            data.y_test, self.predictions, output_dict=True)
+            data.y_test, self.predictions, output_dict=True,zero_division=0)
         return report
 
-    def print_results(self, data: TrainingData):
-        """Print the model predictions, classification report, and confusion matrix for the test data."""
-        print(self.predictions)
-        print(classification_report(data.y_test, self.predictions))
-        print(confusion_matrix(data.y_test, self.predictions))
 
     def predict_emails(self, email_embeddings, email_contents):
         """Predict the class for each email based on its embeddings and return a list of (prediction, email) pairs."""

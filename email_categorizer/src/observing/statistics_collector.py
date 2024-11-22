@@ -26,7 +26,7 @@ class StatCollector(Observer):
                 print(f"F1-Score: {met['f1-score']}")
                 print(f"Support: {met['support']}")
                 print("\n")
-            elif email_class is "accuracy":
+            elif email_class == "accuracy":
                 print("Overall Metrics:")
                 print(f"Accuracy: {met:.3f}")
                 print("\n")

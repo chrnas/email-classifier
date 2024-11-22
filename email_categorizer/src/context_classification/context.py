@@ -42,9 +42,7 @@ class ContextClassifier():
         report = self.modelstrat.classification_report(self.data)
         self.notify("evaluating", report)
 
-    def print_results(self):
-        """Print results from the selected model strategy."""
-        self.modelstrat.print_results(self.data)
+
 
     def predict_emails(self, email_embeddings, email_content):
         """Make predictions for email content and notify observers."""

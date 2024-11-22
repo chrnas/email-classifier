@@ -23,7 +23,8 @@ class DataProcessor(DataProcessorBase):
     """Concrete Data Processor"""
 
     def process(self, df: pd.DataFrame):
-        """Return the DataFrame as is (no processing)."""
+        """By default remove rows with empty or NaN values in column 'y'."""
+        df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
         return df
 
     def __str__(self):
@@ -43,19 +44,6 @@ class DataProcessorDecorator(DataProcessorBase):
 
     def __str__(self):
         return str(self._processor)
-
-
-class DeDuplicationDecorator(DataProcessorDecorator):
-    """Concrete decorator for deduplication"""
-
-    def __str__(self):
-        return f"{self._processor}, deduplication"
-
-    def process(self, df: pd.DataFrame):
-        """Remove rows with empty or NaN values in column 'y'."""
-        df = self._processor.process(df)
-        df = df.loc[(df["y"] != '') & (~df["y"].isna())]
-        return df
 
 
 class NoiseRemovalDecorator(DataProcessorDecorator):
