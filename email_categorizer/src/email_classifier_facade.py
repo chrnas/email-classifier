@@ -82,4 +82,5 @@ class EmailClassifierFacade():
         #self.model_context.print_results()
 
     def display_evaluation(self):
-        self.model_context.print_results()
+        # self.model_context.print_results()
+        self.model_context.classification_report()
