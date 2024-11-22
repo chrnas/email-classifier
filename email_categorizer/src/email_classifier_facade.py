@@ -52,7 +52,6 @@ class EmailClassifierFacade():
             lambda x: x[:char_limit] + ' ...' if len(x) > char_limit else x))
 
     def change_strategy(self, model_type: str):
-        print(model_type)
         model = ModelFactory().create_model(model_type)
         self.model_context.choose_strat(model)
 
