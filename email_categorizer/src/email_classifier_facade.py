@@ -76,11 +76,10 @@ class EmailClassifierFacade():
         self.data = TrainingData(X, self.df)
         #model = ModelFactory().create_model("randomforest")
         #self.model_context.choose_strat(model)
+        self.model_context.data = self.data
         self.model_context.train()
         self.model_context.predict()
         self.model_context.classification_report()
-        #self.model_context.print_results()
 
     def display_evaluation(self):
-        # self.model_context.print_results()
         self.model_context.classification_report()
