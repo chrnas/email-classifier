@@ -1,7 +1,13 @@
 import pandas as pd
+from classifier_config_singleton import ClassifierConfigSingleton
 
 
 class DatasetLoader():
+
+    config: ClassifierConfigSingleton
+
+    def __init__(self):
+        self.config = ClassifierConfigSingleton()
 
     def read_data(self, path: str) -> pd.DataFrame:
         """This method will return the data from the given path as a pandas dataframe."""
@@ -12,19 +18,19 @@ class DatasetLoader():
         """Rename and preprocess columns in the DataFrame for easier access."""
 
         # convert the dtype object to unicode string
-        df['Interaction content'] = df['Interaction content'].values.astype(
-            'U')
-        df['Ticket Summary'] = df['Ticket Summary'].values.astype('U')
+        df[self.config.ticket_summary] = (
+            df[self.config.ticket_summary].values.astype('U')
+        )
+        df[self.config.interaction_content] = (
+            df[self.config.interaction_content].values.astype('U')
+        )
 
-        # Optional: rename variable names for remebering easily
-        df["y1"] = df["Type 1"]
-        df["y2"] = df["Type 2"]
-        df["y3"] = df["Type 3"]
-        df["y4"] = df["Type 4"]
-        df["x"] = df['Interaction content']
+        df[self.config.type_columns] = (
+            df[self.config.type_columns_names].values
+        )
 
-        df["y"] = df["y2"]
-        # use all the types and not just type 2
-        # df["y"] = df[["y1", "y2", "y3", "y4"]].fillna('').apply(lambda row: '|'.join(filter(None, row)), axis=1)
+        df["x"] = df[self.config.interaction_content]
+
+        df["y"] = df[self.config.classification_column]
 
         return df

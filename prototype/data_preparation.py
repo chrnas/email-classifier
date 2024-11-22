@@ -4,7 +4,7 @@ from translate import trans_to_en
 # Prepare data for the model by translating data and removing noises in data Step 1-4
 
 # 1.Data selection
-df = pd.read_csv("AppGallery.csv")
+df = pd.read_csv("Purchasing.csv")
 
 # convert the dtype object to unicode string
 df['Interaction content'] = df['Interaction content'].values.astype('U')
@@ -15,7 +15,7 @@ df["y2"] = df["Type 2"]
 df["y3"] = df["Type 3"]
 df["y4"] = df["Type 4"]
 df["x"] = df['Interaction content']
-df["y"] = df["y2"]
+df["y"] = df["y4"]
 # remove empty y
 df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
 # 2.Data grouping
@@ -83,4 +83,4 @@ good_y1 = temp.y1.value_counts()[temp.y1.value_counts() > 10].index
 temp = temp.loc[temp.y1.isin(good_y1)]
 
 # Save to csv
-temp.to_csv("AppGallery_done.csv", index=False)
+temp.to_csv("Purchasing_done.csv", index=False)
