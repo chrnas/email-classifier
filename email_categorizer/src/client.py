@@ -131,8 +131,8 @@ class Client:
             except SystemExit:
                 # argparse throws a SystemExit exception if parsing fails, we'll catch it to keep the loop running
                 continue
-            except Exception as e:  # catch errror and display it
-                print(f"Error: {e}")
+            #except Exception as e:  # catch errror and display it
+            #    print(f"Error: {e}")
 
     def handle_input(self, args) -> bool:
         match args.command:

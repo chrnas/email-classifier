@@ -28,15 +28,21 @@ class ClassifierConfigSingleton(object):
 
             cls._instance.data_folder_path = "../data/"
 
-            cls._instance.appgallery_input_columns = {
+            cls._instance.input_columns = {
                 'ticket_summary': "Ticket Summary",
                 'interaction_content': "Interaction content"
             }
 
-            cls._instance.appgallery_type_columns = {
-                'test_columns': ["y2", "y3", "y4"],
-                'classification_column': "y2",
-                'grouped_column': "y1"
-            }
+            cls._instance.ticket_summary = "Ticket Summary"
+
+            cls._instance.interaction_content = "Interaction content"
+
+            cls.classification_column = "y1"
+
+            cls._instance.type_columns = [
+                "y1", "y2", "y3", "y4"]
+
+            cls._instance.type_columns_names = [
+                "Type 1", "Type 2", "Type 3", "Type 4"]
 
         return cls._instance
