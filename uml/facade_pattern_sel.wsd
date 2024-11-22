@@ -1,0 +1,72 @@
+@startuml
+!theme mono
+
+class EmailClassifierFacade {
+    - data_processor: DataProcessor
+    - base_embeddings: BaseEmbeddings
+    - model_context: ContextClassifier
+    - data: TrainingData
+    - name: str
+    - df: pd.DataFrame
+    - emails: pd.DataFrame
+    + add_emails(path:str): void
+    + classify_emails(): void
+    + change_strategy(model_type: str): void
+    + add_preprocessing(feature: str): void
+    + train_model(path: str): void
+    + displayEvaluation(): void
+
+}
+
+class DatasetLoader {
+    + read_data(path: str): pd.DataFrame
+    + renameColumns(df: pd.DataFrame): pd.DataFrame
+}
+
+class DataProcessor {
+    + process(df: pd.DataFrame): pd.DataFrame
+}
+
+class BaseEmbeddings {
+    + create_embeddings(embedding_type: str, df: pd.DataFrame): Embedding
+}
+
+class ContextClassifier{
+    + subscribe(observer)
+    + unsubscribe(observer)
+    + notify(observer)
+    + choose_strat(observer)
+    + train(data: TrainingData): void 
+    + predict(data: TrainingData):  void 
+    + classification_report(data: TrainingData): dict
+    + print_results(data: TrainingData): void 
+    + predict_emails(email_embeddings: TrainingData, email_contents:df): void
+
+}
+
+class BaseModel {
+    + train(data: TrainingData): void 
+    + predict(data: TrainingData):  void 
+    + classification_report(data: TrainingData): dict
+    + print_results(data: TrainingData): void 
+    + predict_emails(email_embeddings: TrainingData, email_contents:df): void 
+}
+
+class TrainingData {
+    - y: np.ndarray
+    - X_train: np.ndarray
+    - X_test: np.ndarray
+    - y_train: np.ndarray
+    - y_test : np.ndarray
+
+
+}
+
+EmailClassifierFacade o-- DatasetLoader
+EmailClassifierFacade o-- DataProcessor
+EmailClassifierFacade o-- BaseEmbeddings
+EmailClassifierFacade o-- ContextClassifier
+EmailClassifierFacade o-- TrainingData
+ContextClassifier ..> BaseModel
+
+@enduml
