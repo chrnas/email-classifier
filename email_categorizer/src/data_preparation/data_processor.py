@@ -5,6 +5,8 @@ import stanza
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
 from tqdm import tqdm
+from classifier_config_singleton import ClassifierConfigSingleton
+
 
 class DataProcessorBase(ABC):
     """Base class for Data Processor"""
@@ -65,12 +67,15 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
 
     def process(self, df: pd.DataFrame):
         """Remove noise patterns from 'Ticket Summary' and 'Interaction content'."""
+
+        config = ClassifierConfigSingleton()
+
         df = self._processor.process(
             df)  # Get the current DataFrame from the previous processor
 
         # Define the noise patterns for 'Ticket Summary'
         noise = "(sv\s*:)|(wg\s*:)|(ynt\s*:)|(fw(d)?\s*:)|(r\s*:)|(re\s*:)|(\[|\])|(aspiegel support issue submit)|(null)|(nan)|((bonus place my )?support.pt 自动回复:)"
-        df["Ticket Summary"] = df["Ticket Summary"].str.lower().replace(
+        df[config.ticket_summary] = df[config.ticket_summary].str.lower().replace(
             noise, " ", regex=True).replace(r'\s+', ' ', regex=True).str.strip()
 
         # Define additional noise patterns for 'Interaction content'
@@ -93,11 +98,11 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
 
         # Apply noise removal to 'Interaction content' column
         for pattern in noise_1:
-            df["Interaction content"] = df["Interaction content"].replace(
+            df[config.interaction_content] = df[config.interaction_content].replace(
                 pattern, " ", regex=True)
 
         # Clean extra spaces and strip
-        df["Interaction content"] = df["Interaction content"].replace(
+        df[config.interaction_content] = df[config.interaction_content].replace(
             r'\s+', ' ', regex=True).str.strip()
 
         # Filter out low-frequency 'y1' values
@@ -115,8 +120,11 @@ class TranslatorDecorator(DataProcessorDecorator):
 
     def process(self, df: pd.DataFrame):
         """Translate 'Ticket Summary' from its original language to English."""
+
+        config = ClassifierConfigSingleton()
+
         df = self._processor.process(df)
-        texts = df[Config.TICKET_SUMMARY].to_list()
+        texts = df[config.ticket_summary].to_list()
 
         model = M2M100ForConditionalGeneration.from_pretrained(
             "facebook/m2m100_418M")
@@ -150,7 +158,7 @@ class TranslatorDecorator(DataProcessorDecorator):
                     generated_tokens, skip_special_tokens=True)[0]
                 text_en_l.append(text_en)
 
-        df[Config.TICKET_SUMMARY] = text_en_l
+        df[config.ticket_summary] = text_en_l
         return df
 
 
@@ -162,9 +170,12 @@ class UnicodeConversionDecorator(DataProcessorDecorator):
 
     def process(self, df: pd.DataFrame):
         """Convert 'Interaction Content' and 'Ticket Summary' to Unicode."""
+        
+        config = ClassifierConfigSingleton()
+        
         df = self._processor.process(df)
-        df[Config.INTERACTION_CONTENT] = df[Config.INTERACTION_CONTENT].values.astype(
+        df[config.interaction_content] = df[config.interaction_content].values.astype(
             'U')
-        df[Config.TICKET_SUMMARY] = df[Config.TICKET_SUMMARY].values.astype(
+        df[config.ticket_summary] = df[config.ticket_summary].values.astype(
             'U')
         return df

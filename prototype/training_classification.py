@@ -10,7 +10,7 @@ import pickle
 ### Training the model
 
 # Load and preprocess data
-df = pd.read_csv("AppGallery_done.csv")
+df = pd.read_csv("Purchasing_done.csv")
 df['Interaction content'] = df['Interaction content'].values.astype('U')
 df['Ticket Summary'] = df['Ticket Summary'].values.astype('U')
 
