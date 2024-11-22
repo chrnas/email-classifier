@@ -1,0 +1,56 @@
+@startuml
+!theme mono
+
+class EmailClassifierFacade{
+    - model_context: ContextClassifier
+}
+
+
+class ContextClassifier{
+    + subscribe(observer)
+    + unsubscribe(observer)
+    + notify(observer)
+    + choose_strat(observer)
+    + train(data: TrainingData): void 
+    + predict(data: TrainingData):  void 
+    + classification_report(data: TrainingData): dict
+    + print_results(data: TrainingData): void 
+    + predict_emails(email_embeddings: TrainingData, email_contents:df): void
+
+}
+
+class ModelFactory{
+    + create_model(model_type: str): BaseModel
+}
+
+class Bayes {
+    
+}
+
+class RandomForest {
+    
+    
+}
+
+class SVCModel {
+
+}
+
+
+
+interface BaseModel {
+    + train(data: TrainingData): void 
+    + predict(data: TrainingData):  void 
+    + classification_report(data: TrainingData): dict
+    + print_results(data: TrainingData): void 
+    + predict_emails(email_embeddings: TrainingData, email_contents:df): void 
+}
+
+EmailClassifierFacade o-- ModelFactory
+EmailClassifierFacade --> ContextClassifier: uses
+ModelFactory ..> BaseModel: creates
+BaseModel  <|-- RandomForest
+BaseModel <|-- SVCModel
+BaseModel <|-- Bayes
+
+@enduml
