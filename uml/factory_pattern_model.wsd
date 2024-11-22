@@ -39,6 +39,8 @@ class SVCModel {
 
 
 interface BaseModel {
+    - mdl: Any
+    - predictions: Any
     + train(data: TrainingData): void 
     + predict(data: TrainingData):  void 
     + classification_report(data: TrainingData): dict

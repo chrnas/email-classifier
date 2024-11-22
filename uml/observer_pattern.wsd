@@ -1,5 +1,5 @@
 @startuml
-
+!theme mono
 abstract class Observer {
     + update(event_type: str, data: Any): void
     + display(): void
