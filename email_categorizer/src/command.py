@@ -87,7 +87,7 @@ class CreateEmailClassifierCommand(Command):
         )
         self.email_classifiers.append(self.email_classifier)
         self.created_email_classifier = self.email_classifier
-        print('Added Email classifier:\n', self.created_email_classifier)
+        print('Added Email classifier:', self.created_email_classifier)
 
     def undo(self):
         self.email_classifiers.remove(self.created_email_classifier)
