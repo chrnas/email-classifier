@@ -1,7 +1,6 @@
 from .data_processor import (
     NoiseRemovalDecorator,
     TranslatorDecorator,
-    DeDuplicationDecorator,
     UnicodeConversionDecorator,
     DataProcessorDecorator,
     DataProcessor
@@ -16,8 +15,6 @@ class SimpleDataPreProcessorDecoratorFactory:
             return NoiseRemovalDecorator(processor)
         elif feature == "translation":
             return TranslatorDecorator(processor)
-        elif feature == "deduplication":
-            return DeDuplicationDecorator(processor)
         elif feature == "unicode_conversion":
             return UnicodeConversionDecorator(processor)
         else:

@@ -9,7 +9,6 @@ class ClassifierConfigSingleton(object):
 
             # Configuration using dictionaries and variables
             cls._instance.preprocessing_features = [
-                'deduplication',
                 'unicode_conversion',
                 'noise_removal',
                 'translation']
