@@ -1,0 +1,41 @@
+@startuml
+
+abstract class Observer {
+    + update(event_type: str, data: Any): void
+    + display(): void
+}
+
+class ResultDisplayer {
+    - predictions: List[Tuple[Any, str]]
+    + __init__(): void
+    + update(event_type: str, predictions: List[Tuple[Any, str]]): void
+    + display(): void
+}
+
+class StatCollector {
+    - statistics: dict
+    + __init__(): void
+    + update(event_type: str, statistics: dict): void
+    + display(): void
+}
+
+class ContextClassifier {
+    - modelstrat: BaseModel
+    - data: TrainingData
+    - _observers: List
+    + __init__(data: TrainingData): void
+    + subscribe(observer: Observer): void
+    + unsubscribe(observer: Observer): void
+    + notify(event_type: str, smth: Any): void
+    + choose_strat(modelstrat: BaseModel): void
+    + train(): void
+    + predict(): void
+    + classification_report(): void
+    + print_results(): void
+    + predict_emails(email_embeddings: Any, email_content: Any): void
+}
+
+Observer <|-- ResultDisplayer
+Observer <|-- StatCollector
+ContextClassifier o--  Observer
+@enduml

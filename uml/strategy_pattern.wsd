@@ -1,0 +1,45 @@
+@startuml
+
+class ContextClassifier {
+    - modelstrat: BaseModel
+    - data: TrainingData
+    - _observers: List
+    + __init__(data: TrainingData): void
+    + subscribe(observer: Observer): void
+    + unsubscribe(observer: Observer): void
+    + notify(event_type: str, smth: Any): void
+    + choose_strat(modelstrat: BaseModel): void
+    + train(): void
+    + predict(): void
+    + classification_report(): void
+    + print_results(): void
+    + predict_emails(email_embeddings: Any, email_content: Any): void
+}
+
+abstract class BaseModel {
+    - mdl: Any
+    - predictions: Any
+    + train(data: TrainingData): void
+    + predict(data: TrainingData): void
+    + classification_report(data: TrainingData): dict
+    + print_results(data: TrainingData): void
+    + predict_emails(email_embeddings: Any, email_contents: Any): List[Tuple[Any, str]]
+}
+
+class Bayes {
+    + __str__(): str
+}
+class RandomForest {
+    + __str__(): str
+}
+class SVCModel {
+    + __str__(): str
+}
+
+
+
+ContextClassifier o-- BaseModel
+BaseModel <|-- Bayes
+BaseModel <|-- RandomForest
+BaseModel <|-- SVCModel
+@enduml

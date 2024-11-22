@@ -19,7 +19,7 @@ class ContextClassifier():
         if observer in self._observers:
             self._observers.remove(observer)
 
-    def notify(self, event_type, smth):
+    def notify(self, event_type: str, smth):
         """Notify all observers of an event."""
         for observer in self._observers:
             observer.update(event_type, smth)

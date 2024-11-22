@@ -10,16 +10,16 @@ class BaseModel(ABC):
     def train(self, data: TrainingData) -> None:
         self.mdl = self.mdl.fit(data.X_train, data.y_train)
 
-    def predict(self, data) -> None:
+    def predict(self, data: TrainingData) -> None:
         predictions = self.mdl.predict(data.X_test)
         self.predictions = predictions
 
-    def classification_report(self, data):
+    def classification_report(self, data: TrainingData):
         report = classification_report(
             data.y_test, self.predictions, output_dict=True)
         return report
 
-    def print_results(self, data):
+    def print_results(self, data: TrainingData):
         print(self.predictions)
         print(classification_report(data.y_test, self.predictions))
         print(confusion_matrix(data.y_test, self.predictions))
