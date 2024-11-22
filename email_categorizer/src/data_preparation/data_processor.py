@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 import pandas as pd
-from config import Config
 import stanza
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
@@ -55,7 +54,7 @@ class DeDuplicationDecorator(DataProcessorDecorator):
     def process(self, df: pd.DataFrame):
         """Remove rows with empty or NaN values in column 'y'."""
         df = self._processor.process(df)
-        df = df.loc[(df["y"] != '') & (~df["y"].isna()),]
+        df = df.loc[(df["y"] != '') & (~df["y"].isna())]
         return df
 
 
