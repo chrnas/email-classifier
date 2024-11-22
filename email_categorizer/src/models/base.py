@@ -19,7 +19,7 @@ class BaseModel(ABC):
     def classification_report(self, data: TrainingData):
         """Generate and return a classification report based on the test data and model predictions."""
         report = classification_report(
-            data.y_test, self.predictions, output_dict=True)
+            data.y_test, self.predictions, output_dict=True,zero_division=0)
         return report
 
 
