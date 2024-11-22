@@ -4,6 +4,7 @@ from training_data import TrainingData
 
 
 class BaseModel(ABC):
+
     def __init__(self) -> None:
         self.predictions = None
 
@@ -19,9 +20,8 @@ class BaseModel(ABC):
     def classification_report(self, data: TrainingData):
         """Generate and return a classification report based on the test data and model predictions."""
         report = classification_report(
-            data.y_test, self.predictions, output_dict=True,zero_division=0)
+            data.y_test, self.predictions, output_dict=True, zero_division=0)
         return report
-
 
     def predict_emails(self, email_embeddings, email_contents):
         """Predict the class for each email based on its embeddings and return a list of (prediction, email) pairs."""

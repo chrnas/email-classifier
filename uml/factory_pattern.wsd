@@ -6,26 +6,25 @@ class EmailClassifierFacade {
 }
 
 class SimpleEmbeddingsFactory {
-    + create_embeddings(embedding_type: str, df: pd.DataFrame): Embedding
+    + create_embeddings(embedding_type: str): BaseEmbeddings
 }
 
 class SentenceTransformerEmbeddings {
-    - df: pd.DataFrame
-    + transform(): np.ndarray
 }
 
 class TfidfEmbeddings {
-    - df: pd.DataFrame
-    + transform(): np.ndarray
+    vectorizer_interaction: TfidfVectorizer
+    vectorizer_summary: TfidfVectorizer
 }
 
-class Word2VecEmbeddings {
-    - df: pd.DataFrame
-    + transform(): np.ndarray
+class TfidfSentenceEmbeddings {
+    vectorizer_interaction: TfidfVectorizer
+    vectorizer_summary: TfidfVectorizer
 }
 
 interface BaseEmbedding {
-    + transform(): np.ndarray
+    + create_training_embeddings(df: DataFrame): np.ndarray
+    + create_classification_embeddings(df: DataFrame): np.ndarray
 }
 
 EmailClassifierFacade o-- BaseEmbedding
@@ -33,6 +32,6 @@ EmailClassifierFacade --> SimpleEmbeddingsFactory: uses
 SimpleEmbeddingsFactory ..> BaseEmbedding : creates
 BaseEmbedding <|-- SentenceTransformerEmbeddings
 BaseEmbedding <|-- TfidfEmbeddings
-BaseEmbedding <|-- Word2VecEmbeddings
+BaseEmbedding <|-- TfidfSentenceEmbeddings
 
 @enduml

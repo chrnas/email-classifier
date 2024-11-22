@@ -92,9 +92,15 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
         df[config.interaction_content] = df[config.interaction_content].replace(
             r'\s+', ' ', regex=True).str.strip()
 
-        # Filter out low-frequency 'y1' values
-        good_y1 = df.y1.value_counts()[df.y1.value_counts() > 10].index
-        df = df.loc[df.y1.isin(good_y1)]
+        # Filter out low-frequency 'y' values
+        good_y1 = df.y.value_counts()[df.y.value_counts() > 10].index
+
+        # Check if there are any values to filter
+        if not good_y1.empty:
+            df = df.loc[df.y.isin(good_y1)]
+        else:
+            # Optionally log or handle the case where no values meet the condition
+            print("Warning: No values in column 'y' have more than 10 occurrences. Skipping filtering.")
 
         return df
 

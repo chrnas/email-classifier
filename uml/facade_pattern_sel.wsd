@@ -28,7 +28,8 @@ class DataProcessor {
 }
 
 class BaseEmbeddings {
-    + create_embeddings(embedding_type: str, df: pd.DataFrame): Embedding
+    + create_training_embeddings(df: DataFrame): np.ndarray
+    + create_classification_embeddings(df: DataFrame): np.ndarray
 }
 
 class ContextClassifier{
@@ -42,14 +43,6 @@ class ContextClassifier{
     + print_results(data: TrainingData): void 
     + predict_emails(email_embeddings: TrainingData, email_contents:df): void
 
-}
-
-class BaseModel {
-    + train(data: TrainingData): void 
-    + predict(data: TrainingData):  void 
-    + classification_report(data: TrainingData): dict
-    + print_results(data: TrainingData): void 
-    + predict_emails(email_embeddings: TrainingData, email_contents:df): void 
 }
 
 class TrainingData {
@@ -67,6 +60,5 @@ EmailClassifierFacade o-- DataProcessor
 EmailClassifierFacade o-- BaseEmbeddings
 EmailClassifierFacade o-- ContextClassifier
 EmailClassifierFacade o-- TrainingData
-ContextClassifier ..> BaseModel
 
 @enduml

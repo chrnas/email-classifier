@@ -6,7 +6,8 @@ from .base_embeddings import BaseEmbeddings
 
 class TfidfEmbeddings(BaseEmbeddings):
 
-    vectorizer: TfidfVectorizer
+    vectorizer_interaction: TfidfVectorizer
+    vectorizer_summary: TfidfVectorizer
 
     def __init__(self):
         self.vectorizer_interaction = TfidfVectorizer(

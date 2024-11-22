@@ -37,7 +37,7 @@ class ClassifierConfigSingleton(object):
 
             cls._instance.interaction_content = "Interaction content"
 
-            cls.classification_column = "y1"
+            cls.classification_column = "y2"
 
             cls._instance.type_columns = [
                 "y1", "y2", "y3", "y4"]

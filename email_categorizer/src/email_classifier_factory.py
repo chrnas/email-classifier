@@ -23,7 +23,7 @@ class EmailClassifierFactory:
         data_processor = DataProcessor()
         df = data_processor.process(df)
         feature_engineer = EmbeddingsFactory().create_embeddings(
-            embedding_type, df
+            embedding_type
         )
         X = feature_engineer.create_training_embeddings(df)
         data = TrainingData(X, df)

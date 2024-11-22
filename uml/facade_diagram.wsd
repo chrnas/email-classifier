@@ -24,7 +24,8 @@ class DataProcessor {
 }
 
 class BaseEmbeddings {
-    + create_embeddings(): void
+    + create_training_embeddings(df: DataFrame): np.ndarray
+    + create_classification_embeddings(df: DataFrame): np.ndarray
 }
 
 class ContextClassifier {

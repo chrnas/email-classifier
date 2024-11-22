@@ -6,6 +6,9 @@ from .base_embeddings import BaseEmbeddings
 
 class TfidfSentenceEmbeddings(BaseEmbeddings):
 
+    vectorizer_interaction: TfidfVectorizer
+    vectorizer_summary: TfidfVectorizer
+
     def __init__(self):
         self.vectorizer_interaction = TfidfVectorizer(
             max_features=2000, min_df=4, max_df=0.90)

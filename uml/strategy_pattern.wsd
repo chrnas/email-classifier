@@ -1,4 +1,9 @@
 @startuml
+!theme mono
+
+class EmailClassifierFacade {
+    - model_context: ContextClassifier
+}
 
 class ContextClassifier {
     - modelstrat: BaseModel
@@ -27,13 +32,10 @@ abstract class BaseModel {
 }
 
 class Bayes {
-    + __str__(): str
 }
 class RandomForest {
-    + __str__(): str
 }
 class SVCModel {
-    + __str__(): str
 }
 
 
@@ -42,4 +44,5 @@ ContextClassifier o-- BaseModel
 BaseModel <|-- Bayes
 BaseModel <|-- RandomForest
 BaseModel <|-- SVCModel
+EmailClassifierFacade o-- ContextClassifier
 @enduml

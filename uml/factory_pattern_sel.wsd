@@ -22,15 +22,9 @@ class TfidfSentenceEmbeddings {
 
 }
 
-
-class Word2VecEmbeddings {
-    
-    + tokenize_sentence(): np.ndarray
-}
-
 interface BaseEmbedding {
-    + create_training_embeddings(): np.ndarray
-    + create_classification_embeddings(): np.ndarray
+    + create_training_embeddings(df: DataFrame): np.ndarray
+    + create_classification_embeddings(df: DataFrame): np.ndarray
 }
 
 EmailClassifierFacade o-- BaseEmbedding
