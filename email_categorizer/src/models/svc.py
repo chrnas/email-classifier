@@ -9,4 +9,4 @@ class SVCModel(BaseModel):
         self.mdl = SVC()
 
     def __str__(self) -> str:
-        return "Bayes"
+        return "SVC"

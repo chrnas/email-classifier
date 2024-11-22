@@ -9,4 +9,4 @@ class RandomForest(BaseModel):
             n_estimators=1000, random_state=42, class_weight='balanced_subsample')
 
     def __str__(self) -> str:
-        return "Bayes"
+        return "RandomForest"
