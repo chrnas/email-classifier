@@ -7,10 +7,10 @@ class EmailClassifierFacade{
 
 
 class ContextClassifier{
-    + subscribe(observer)
-    + unsubscribe(observer)
-    + notify(observer)
-    + choose_strat(observer)
+    + subscribe(observer): void
+    + unsubscribe(observer): void
+    + notify(observer): void
+    + choose_strat(observer): void
     + train(data: TrainingData): void 
     + predict(data: TrainingData):  void 
     + classification_report(data: TrainingData): dict
