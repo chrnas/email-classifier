@@ -1,0 +1,37 @@
+@startuml
+
+class ClassifierConfigSingleton {
+    - _instance : None
+    - preprocessing_features : List
+    - embeddings : List
+    - models : List
+    - default_classifier_config : Dict
+    - data_folder_path : str
+    - appgallery_input_columns : Dict
+    - appgallery_type_columns : Dict
+    + __new__(cls)
+    + preprocessing_features = ['deduplication', 'unicode_conversion', 'noise_removal', 'translation']
+    + embeddings = ['tfidf', 'wordcount', 'sentence_transformer']
+    + models = ['bayes', 'randomforest', 'svc']
+    + default_classifier_config = {'preprocessing': [], 'embedding': 'tfidf', 'model': 'randomforest'}
+    + data_folder_path = "../data/"
+    + appgallery_input_columns = {'ticket_summary': "Ticket Summary", 'interaction_content': "Interaction content"}
+    + appgallery_type_columns = {'test_columns': ["y2", "y3", "y4"], 'classification_column': "y2", 'grouped_column': "y1"}
+}
+
+class Client {
+    - email_classifiers: list[EmailClassifierFacade]
+    - data_set_loader: DatasetLoader
+    - command_executor: CommandInvoker
+    + __init__()
+    + print_startup(): void
+    + create_parser(): argparse.ArgumentParser
+    + create_completer(): NestedCompleter
+    + run_cli(): void
+    + handle_command(args): bool
+    - config_manager: ClassifierConfigSingleton
+}
+
+Client --> ClassifierConfigSingleton
+
+@enduml

@@ -11,6 +11,7 @@ class Client {
     + create_completer(): NestedCompleter
     + run_cli(): void
     + handle_command(args): bool
+    - config_manager: ClassifierConfigSingleton
 }
 
 class CommandInvoker {
