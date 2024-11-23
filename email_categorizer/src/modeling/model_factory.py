@@ -1,4 +1,3 @@
-import numpy as np
 from .bayes import Bayes
 from .randomforest import RandomForest
 from .svc import SVCModel

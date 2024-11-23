@@ -1,0 +1,17 @@
+# This is a requirements.txt file
+# It lists the Python dependencies required by the project
+
+# Core dependencies
+numpy==1.26.4
+pandas==2.2.3
+prompt_toolkit==3.0.48
+regex==2024.9.11
+scikit-learn==1.5.2
+sentence-transformers==3.2.1
+sentencepiece==0.2.0
+setuptools==75.1.0
+stanza==1.9.2
+tokenizers==0.20.0
+tqdm==4.66.5
+transformers==4.45.1
+
