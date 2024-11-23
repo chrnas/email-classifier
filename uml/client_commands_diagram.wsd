@@ -1,0 +1,60 @@
+@startuml
+!theme mono
+
+
+class Client  {
+    - email_classifiers: list[EmailClassifierFacade]
+    - data_set_loader: DatasetLoader
+    - command_executor: CommandInvoker
+    + __init__()
+    + print_startup(): void
+    + create_parser(): argparse.ArgumentParser
+    + create_completer(): NestedCompleter
+    + run_cli(): void
+    + handle_command(args): bool
+    - config_manager: ClassifierConfigSingleton
+}
+
+class CommandInvoker {
+    + _command: Command
+    + set_command(command: Command): void
+    + execute_command(command: Command): void
+    + undo(): void
+}
+
+
+class Command {
+    + execute(): void
+    + undo(): void
+}
+
+class EmailClassifierFactory {
+    + create_email_classifier(): EmailClassifierFacade
+}
+
+class ListEmailClassifiersCommand {
+}
+
+class ChooseEmailClassifierCommand {
+}
+
+class EmailClassifierFacade {
+}
+
+Client o-- "1..*" EmailClassifierFacade : manages
+Client o-- CommandInvoker
+CommandInvoker --> Command : invokes
+
+Command <|-- ListEmailClassifiersCommand
+Command <|-- ChooseEmailClassifierCommand
+Command <|-- CreateEmailClassifierCommand
+
+Client --> Command: executes
+Command --> Client : creates
+
+CreateEmailClassifierCommand --> EmailClassifierFactory : uses
+EmailClassifierFactory ..> EmailClassifierFacade : creates
+
+
+
+@enduml

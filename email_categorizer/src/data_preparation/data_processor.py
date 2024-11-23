@@ -34,9 +34,12 @@ class DataProcessor(DataProcessorBase):
 class DataProcessorDecorator(DataProcessorBase):
     """Decorator base class"""
 
+    config: ClassifierConfigSingleton
+
     def __init__(self, processor: DataProcessorBase):
         """Initialize the decorator with a processor instance."""
         self._processor = processor
+        self.config = ClassifierConfigSingleton()
 
     def process(self, df: pd.DataFrame):
         """Delegate the processing to the wrapped processor."""
@@ -55,14 +58,12 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
     def process(self, df: pd.DataFrame):
         """Remove noise patterns from 'Ticket Summary' and 'Interaction content'."""
 
-        config = ClassifierConfigSingleton()
-
         df = self._processor.process(
             df)  # Get the current DataFrame from the previous processor
 
         # Define the noise patterns for 'Ticket Summary'
         noise = "(sv\s*:)|(wg\s*:)|(ynt\s*:)|(fw(d)?\s*:)|(r\s*:)|(re\s*:)|(\[|\])|(aspiegel support issue submit)|(null)|(nan)|((bonus place my )?support.pt 自动回复:)"
-        df[config.ticket_summary] = df[config.ticket_summary].str.lower().replace(
+        df[self.config.ticket_summary] = df[self.config.ticket_summary].str.lower().replace(
             noise, " ", regex=True).replace(r'\s+', ' ', regex=True).str.strip()
 
         # Define additional noise patterns for 'Interaction content'
@@ -85,11 +86,11 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
 
         # Apply noise removal to 'Interaction content' column
         for pattern in noise_1:
-            df[config.interaction_content] = df[config.interaction_content].replace(
+            df[self.config.interaction_content] = df[self.config.interaction_content].replace(
                 pattern, " ", regex=True)
 
         # Clean extra spaces and strip
-        df[config.interaction_content] = df[config.interaction_content].replace(
+        df[self.config.interaction_content] = df[self.config.interaction_content].replace(
             r'\s+', ' ', regex=True).str.strip()
 
         # Filter out low-frequency 'y' values
@@ -100,7 +101,8 @@ class NoiseRemovalDecorator(DataProcessorDecorator):
             df = df.loc[df.y.isin(good_y1)]
         else:
             # Optionally log or handle the case where no values meet the condition
-            print("Warning: No values in column 'y' have more than 10 occurrences. Skipping filtering.")
+            print(
+                "Warning: No values in column 'y' have more than 10 occurrences. Skipping filtering.")
 
         return df
 
@@ -114,10 +116,8 @@ class TranslatorDecorator(DataProcessorDecorator):
     def process(self, df: pd.DataFrame):
         """Translate 'Ticket Summary' from its original language to English."""
 
-        config = ClassifierConfigSingleton()
-
         df = self._processor.process(df)
-        texts = df[config.ticket_summary].to_list()
+        texts = df[self.config.ticket_summary].to_list()
 
         model = M2M100ForConditionalGeneration.from_pretrained(
             "facebook/m2m100_418M")
@@ -151,7 +151,7 @@ class TranslatorDecorator(DataProcessorDecorator):
                     generated_tokens, skip_special_tokens=True)[0]
                 text_en_l.append(text_en)
 
-        df[config.ticket_summary] = text_en_l
+        df[self.config.ticket_summary] = text_en_l
         return df
 
 
@@ -163,12 +163,10 @@ class UnicodeConversionDecorator(DataProcessorDecorator):
 
     def process(self, df: pd.DataFrame):
         """Convert 'Interaction Content' and 'Ticket Summary' to Unicode."""
-        
-        config = ClassifierConfigSingleton()
-        
+
         df = self._processor.process(df)
-        df[config.interaction_content] = df[config.interaction_content].values.astype(
+        df[self.config.interaction_content] = df[self.config.interaction_content].values.astype(
             'U')
-        df[config.ticket_summary] = df[config.ticket_summary].values.astype(
+        df[self.config.ticket_summary] = df[self.config.ticket_summary].values.astype(
             'U')
         return df

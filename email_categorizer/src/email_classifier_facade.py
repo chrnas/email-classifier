@@ -1,12 +1,12 @@
-from data_preparation.simple_data_preprocessor_decorator_factory import SimpleDataPreProcessorDecoratorFactory
+from data_preparation.data_preprocessor_decorator_factory import DataProcessorDecoratorFactory
 from feature_engineering.base_embeddings import BaseEmbeddings
-from context_classification.context import ContextClassifier
+from modeling.context import ContextClassifier
 from data_preparation.dataset_loader import DatasetLoader
 import pandas as pd
-from context_classification.context import ContextClassifier
+from modeling.context import ContextClassifier
 from data_preparation.data_processor import DataProcessor
-from training_data import TrainingData
-from models.model_factory import ModelFactory
+from modeling.training_data import TrainingData
+from modeling.model_factory import ModelFactory
 
 
 class EmailClassifierFacade():
@@ -59,7 +59,7 @@ class EmailClassifierFacade():
         self.model_context.choose_strat(model)
 
     def add_preprocessing(self, feature: str):
-        self.data_preprocessor = SimpleDataPreProcessorDecoratorFactory().create_data_preprocessor(
+        self.data_preprocessor = DataProcessorDecoratorFactory().create_data_preprocessor(
             self.data_preprocessor, feature)
 
         print("Processor updated to:", self.data_preprocessor)

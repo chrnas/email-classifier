@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from sklearn.metrics import classification_report, confusion_matrix
-from training_data import TrainingData
+from .training_data import TrainingData
 
 
 class BaseModel(ABC):

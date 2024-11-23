@@ -1,5 +1,4 @@
-from .observe import Observer
-from context_classification.context import ContextClassifier
+from .observer import Observer
 
 
 class StatCollector(Observer):

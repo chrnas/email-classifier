@@ -4,11 +4,7 @@
 class ContextClassifier {
     - modelstrat: BaseModel
     - data: TrainingData
-    - _observers: List
     + __init__(data: TrainingData): void
-    + subscribe(observer: Observer): void
-    + unsubscribe(observer: Observer): void
-    + notify(event_type: str, smth: Any): void
     + choose_strat(modelstrat: BaseModel): void
     + train(): void
     + predict(): void
@@ -40,5 +36,4 @@ ContextClassifier o-- BaseModel
 BaseModel <|-- Bayes
 BaseModel <|-- RandomForest
 BaseModel <|-- SVCModel
-EmailClassifierFacade o-- ContextClassifier
 @enduml

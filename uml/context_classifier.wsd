@@ -1,6 +1,30 @@
 @startuml
 !theme mono
 
+class EmailClassifierFacade {
+    - model_context: ContextClassifier
+    + change_strategy(model: BaseModel): void
+}
+
+abstract class Observer {
+    + update(event_type: str, data: Any): void
+    + display(): void
+}
+
+class ResultDisplayer {
+    - predictions: List[Tuple[Any, str]]
+    + __init__(): void
+    + update(event_type: str, predictions: List[Tuple[Any, str]]): void
+    + display(): void
+}
+
+class StatCollector {
+    - statistics: dict
+    + __init__(): void
+    + update(event_type: str, statistics: dict): void
+    + display(): void
+}
+
 class ContextClassifier {
     - modelstrat: BaseModel
     - data: TrainingData
@@ -27,6 +51,10 @@ abstract class BaseModel {
     + predict_emails(email_embeddings: Any, email_contents: Any): List[Tuple[Any, str]]
 }
 
+class ModelFactory{
+    + create_model(model_type: str): BaseModel
+}
+
 class Bayes {
 }
 class RandomForest {
@@ -41,4 +69,10 @@ BaseModel <|-- Bayes
 BaseModel <|-- RandomForest
 BaseModel <|-- SVCModel
 EmailClassifierFacade o-- ContextClassifier
+ModelFactory ..> BaseModel: creates
+EmailClassifierFacade --> ModelFactory: uses
+
+Observer <|-- ResultDisplayer
+Observer <|-- StatCollector
+ContextClassifier o--  Observer
 @enduml

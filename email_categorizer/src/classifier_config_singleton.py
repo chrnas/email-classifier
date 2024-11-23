@@ -7,7 +7,9 @@ class ClassifierConfigSingleton(object):
         if cls._instance is None:
             cls._instance = super(ClassifierConfigSingleton, cls).__new__(cls)
 
-            # Configuration using dictionaries and variables
+            # configurations for the cli and client
+            cls._instance.data_folder_path = "../data/"
+
             cls._instance.preprocessing_features = [
                 'unicode_conversion',
                 'noise_removal',
@@ -15,24 +17,12 @@ class ClassifierConfigSingleton(object):
 
             cls._instance.embeddings = [
                 'tfidf',
-                'wordcount',
-                'sentence_transformer']
+                'sentence_transformer',
+                'tfidf_sentence_transformer']
 
             cls._instance.models = ['bayes', 'randomforest', 'svc']
 
-            cls._instance.default_classifier_config = {
-                'preprocessing': [],
-                'embedding': 'tfidf',
-                'model': 'randomforest'
-            }
-
-            cls._instance.data_folder_path = "../data/"
-
-            cls._instance.input_columns = {
-                'ticket_summary': "Ticket Summary",
-                'interaction_content': "Interaction content"
-            }
-
+            # Configurations for the email classifier
             cls._instance.ticket_summary = "Ticket Summary"
 
             cls._instance.interaction_content = "Interaction content"

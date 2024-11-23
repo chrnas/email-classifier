@@ -3,21 +3,17 @@ from abc import ABC, abstractmethod
 from email_classifier_facade import EmailClassifierFacade
 from email_classifier_factory import EmailClassifierFactory
 from data_preparation.dataset_loader import DatasetLoader
-from models.model_factory import ModelFactory
 
 
 class CommandInvoker:
     def __init__(self):
         self._command: Command
-        self._history = []
 
     def set_command(self, command):
         self._command = command
-        self._history.append(command)  # keep a history of executed commands
 
     def execute(self):
         self._command.execute()
-        self._history.append(self._command)
 
     def undo(self):
         self._command.undo()
@@ -49,8 +45,7 @@ class AddEmailsCommand(Command):
         self.path = path
 
     def execute(self):
-        path = "../data/"+str(self.path)
-        self.email_classifier.add_emails(path)
+        self.email_classifier.add_emails(self.path)
         print(f'Added emails to email classifier:{self.email_classifier.name}')
 
     def undo():
@@ -76,8 +71,7 @@ class CreateEmailClassifierCommand(Command):
     def execute(self):
         email_classifier_factory = EmailClassifierFactory()
         data_set_loader = DatasetLoader()
-        path = "../data/"+str(self.path)
-        df = data_set_loader.read_data(path)
+        df = data_set_loader.read_data(self.path)
         df = data_set_loader.renameColumns(df)
         self.email_classifier = email_classifier_factory.create_email_classifier(
             df,
@@ -141,11 +135,35 @@ class ChooseEmailClassifierCommand(Command):
         self.email_classifiers.insert(self.previous_index, email_classifier)
 
 
+class RemoveEmailClassifierCommand(Command):
+    def __init__(self, email_classifiers: list[EmailClassifierFacade], name: str):
+        self.email_classifiers = email_classifiers
+        self.name = name
+        self.removed_email_classifier = None
+
+    def execute(self):
+        found = False
+        for email_classifier in self.email_classifiers:
+            if email_classifier.name == self.name:
+                self.removed_email_classifier = email_classifier
+                self.email_classifiers.remove(email_classifier)
+                print(f"Removed email classifier: {self.name}")
+                found = True
+                break
+
+        if not found:
+            print(f"Email classifier '{self.name}' not found.")
+
+    def undo(self):
+        self.email_classifiers.insert(0, self.removed_email_classifier)
+        print("Added back the removed email classifier.")
+
+
 class ChangeStrategyCommand(Command):
     def __init__(self, email_classifier: EmailClassifierFacade, model_type: str):
         self.email_classifier = email_classifier
         self.model_type = model_type
-        # self.old_model = email_classifier.model_context.modelstrat
+        self.old_model = email_classifier.model_context.modelstrat
 
     def execute(self):
         self.email_classifier.change_strategy(self.model_type)
@@ -153,8 +171,8 @@ class ChangeStrategyCommand(Command):
 
     def undo(self):
         print("Undoing the previous change strategy command.")
-        # self.email_classifier.model_context.change_strategy(
-        #    self.email_classifier.old_model)
+        self.email_classifier.model_context.change_strategy(
+            self.email_classifier.old_model)
 
 
 class AddPreprocessingCommand(Command):
@@ -178,8 +196,7 @@ class TrainModelCommand(Command):
         self.path = path
 
     def execute(self):
-        path = "../data/"+str(self.path)
-        self.email_classifier.train_model(path)
+        self.email_classifier.train_model(self.path)
 
     def undo():
         print("There is no undo operation for the train model command.")

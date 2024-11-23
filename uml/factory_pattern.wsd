@@ -5,7 +5,7 @@ class EmailClassifierFacade {
     - base_embedding: BaseEmbedding
 }
 
-class SimpleEmbeddingsFactory {
+class EmbeddingsFactory {
     + create_embeddings(embedding_type: str): BaseEmbeddings
 }
 
@@ -28,8 +28,8 @@ interface BaseEmbedding {
 }
 
 EmailClassifierFacade o-- BaseEmbedding
-EmailClassifierFacade --> SimpleEmbeddingsFactory: uses
-SimpleEmbeddingsFactory ..> BaseEmbedding : creates
+EmailClassifierFacade --> EmbeddingsFactory: uses
+EmbeddingsFactory ..> BaseEmbedding : creates
 BaseEmbedding <|-- SentenceTransformerEmbeddings
 BaseEmbedding <|-- TfidfEmbeddings
 BaseEmbedding <|-- TfidfSentenceEmbeddings

@@ -1,6 +1,4 @@
-from .observe import Observer
-from context_classification.context import ContextClassifier
-from pandas import DataFrame
+from .observer import Observer
 
 class ResultDisplayer(Observer):
     

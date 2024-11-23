@@ -7,7 +7,7 @@ from .data_processor import (
 )
 
 
-class SimpleDataPreProcessorDecoratorFactory:
+class DataProcessorDecoratorFactory:
     @staticmethod
     def create_data_preprocessor(processor: DataProcessor, feature: str) -> DataProcessorDecorator:
         """Create and return a decorated DataProcessor based on the specified feature."""

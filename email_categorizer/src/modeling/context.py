@@ -1,5 +1,5 @@
-from models.base import BaseModel
-from training_data import TrainingData
+from modeling.base import BaseModel
+from .training_data import TrainingData
 
 
 class ContextClassifier():

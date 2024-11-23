@@ -1,7 +1,8 @@
 @startuml
 !theme mono
 
-class Client {
+
+class Client  {
     - email_classifiers: list[EmailClassifierFacade]
     - data_set_loader: DatasetLoader
     - command_executor: CommandInvoker
@@ -15,47 +16,34 @@ class Client {
 }
 
 class CommandInvoker {
+    - _command: Command
+    + set_command(command: Command): void
     + execute_command(command: Command): void
+    + undo(): void
 }
+
 
 class Command {
     + execute(): void
+    + undo(): void
 }
 
 class AddEmailsCommand {
-    + execute(): void
 }
 
 class ClassifyEmailCommand {
-    + execute(): void
-}
-
-class CreateEmailClassifierCommand {
-    + execute(): void
 }
 
 class ChangeStrategyCommand {
-    + execute(): void
-}
-
-class ChooseEmailClassifierCommand {
-    + execute(): void
 }
 
 class AddPreprocessingCommand {
-    + execute(): void
 }
 
 class TrainModelCommand {
-    + execute(): void
 }
 
 class DisplayEvaluationCommand {
-    + execute(): void
-}
-
-class ListEmailClassifiersCommand {
-    + execute(): void
 }
 
 class EmailClassifierFacade {
@@ -63,16 +51,15 @@ class EmailClassifierFacade {
 
 Client o-- "1..*" EmailClassifierFacade : manages
 Client o-- CommandInvoker
-CommandInvoker --> Command : invokes
+CommandInvoker o-- "1" Command : manages
 Command <|-- AddEmailsCommand
 Command <|-- ClassifyEmailCommand
-Command <|-- CreateEmailClassifierCommand
 Command <|-- ChangeStrategyCommand
-Command <|-- ChooseEmailClassifierCommand
 Command <|-- AddPreprocessingCommand
 Command <|-- TrainModelCommand
 Command <|-- DisplayEvaluationCommand
-Command <|-- ListEmailClassifiersCommand
-EmailClassifierFacade o-- "1..*" Command
+
+Command --> EmailClassifierFacade :executes
+Client --> Command :creates 
 
 @enduml

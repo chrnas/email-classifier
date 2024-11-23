@@ -1,4 +1,3 @@
-from context_classification.context import ContextClassifier
 from abc import ABC, abstractmethod
 
 
