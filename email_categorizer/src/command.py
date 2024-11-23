@@ -48,7 +48,7 @@ class AddEmailsCommand(Command):
         self.email_classifier.add_emails(self.path)
         print(f'Added emails to email classifier:{self.email_classifier.name}')
 
-    def undo():
+    def undo(self):
         print("There is no undo operation for the add emails command.")
 
 
@@ -112,14 +112,12 @@ class ChooseEmailClassifierCommand(Command):
     ):
         self.email_classifiers = email_classifiers
         self.name = name
-        self.previoius_index = None
 
     def execute(self):
         found = False
         index = 0
         for email_classifier in self.email_classifiers:
             if email_classifier.name == self.name:
-                self.previoius_index = index
                 self.email_classifiers.insert(
                     0, self.email_classifiers.pop(index))
                 print(f"Active email classifier changed to {self.name}")
@@ -131,8 +129,7 @@ class ChooseEmailClassifierCommand(Command):
             print(f"Email classifier '{self.name}' not found.")
 
     def undo(self):
-        email_classifier = self.email_classifiers.pop(0)
-        self.email_classifiers.insert(self.previous_index, email_classifier)
+        print("There is no undo command for this action.")
 
 
 class RemoveEmailClassifierCommand(Command):
