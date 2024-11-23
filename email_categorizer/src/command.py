@@ -198,7 +198,7 @@ class TrainModelCommand(Command):
     def execute(self):
         self.email_classifier.train_model(self.path)
 
-    def undo():
+    def undo(self):
         print("There is no undo operation for the train model command.")
 
 
@@ -210,6 +210,6 @@ class DisplayEvaluationCommand(Command):
         self.email_classifier.display_evaluation()
         print("Model evaluation displayed")
 
-    def undo():
+    def undo(self):
         os.system('cls')
         print("The terminal has been cleared to no undo operation to display evaluations.")
