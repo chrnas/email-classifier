@@ -1,5 +1,5 @@
 import pandas as pd
-from classifier_config_singleton import ClassifierConfigSingleton
+from src.classifier_config_singleton import ClassifierConfigSingleton
 
 
 class DatasetLoader():

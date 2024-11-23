@@ -1,5 +1,4 @@
 from email_classifier_facade import EmailClassifierFacade
-from data_preparation.dataset_loader import DatasetLoader
 from command import ChangeStrategyCommand, ChooseEmailClassifierCommand, \
     AddEmailsCommand, CommandInvoker, \
     CreateEmailClassifierCommand, DisplayEvaluationCommand, \

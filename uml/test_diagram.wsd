@@ -9,43 +9,46 @@ abstract class DataProcessorBase {
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
-class DataProcessor {
+class ConcreteDataProcessor {
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
-class DataProcessorDecorator {
+abstract class DataProcessorDecorator {
     - _processor: DataProcessorBase
-    config: ClassifierConfigSingleton
+    + DataProcessorDecorator(processor: DataProcessorBase)
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class NoiseRemovalDecorator {
     - _processor: DataProcessorBase
+    + NoiseRemovalDecorator(processor: DataProcessorBase)
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class TranslatorDecorator {
     - _processor: DataProcessorBase
+    + TranslatorDecorator(processor: DataProcessorBase)
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class UnicodeConversionDecorator {
     - _processor: DataProcessorBase
+    + UnicodeConversionDecorator(processor: DataProcessorBase)
     + process(df: pd.DataFrame): pd.DataFrame
 }
 
 class DataProcessorDecoratorFactory {
-    + create_data_preprocessor(processor: DataProcessor, feature: str): DataProcessorDecorator
+    + create_data_preprocessor(processor: DataProcessorBase, feature: str): DataProcessorDecorator
 }
 
 EmailClassifierFacade o-- DataProcessorBase
-DataProcessorBase <|-- DataProcessor
+DataProcessorBase <|-- ConcreteDataProcessor
 DataProcessorBase <|-- DataProcessorDecorator
 DataProcessorDecorator <|-- NoiseRemovalDecorator
 DataProcessorDecorator <|-- TranslatorDecorator
 DataProcessorDecorator <|-- UnicodeConversionDecorator
 
 EmailClassifierFacade --> DataProcessorDecoratorFactory: uses
-DataProcessorDecoratorFactory ..> DataProcessorBase: creates and decorates
+DataProcessorDecoratorFactory --> DataProcessorBase: creates and decorates
 
 @enduml

@@ -1,18 +1,12 @@
 @startuml
 !theme mono
 
-
 class Client  {
     - email_classifiers: list[EmailClassifierFacade]
-    - data_set_loader: DatasetLoader
-    - command_executor: CommandInvoker
-    + __init__()
-    + print_startup(): void
-    + create_parser(): argparse.ArgumentParser
-    + create_completer(): NestedCompleter
-    + run_cli(): void
-    + handle_command(args): bool
+    - command_invoker: CommandInvoker
     - config_manager: ClassifierConfigSingleton
+    + __init__()
+    + handle_input(args): bool
 }
 
 class CommandInvoker {
@@ -22,31 +16,49 @@ class CommandInvoker {
     + undo(): void
 }
 
-
 class Command {
     + execute(): void
     + undo(): void
 }
 
 class AddEmailsCommand {
+    - email_classifier: EmailClassifierFacade
+    - path: str
 }
 
 class ClassifyEmailCommand {
+    - email_classifier: EmailClassifierFacade
 }
 
 class ChangeStrategyCommand {
+    - email_classifier: EmailClassifierFacade
+    - model_type: str
 }
 
 class AddPreprocessingCommand {
+    - email_classifier: EmailClassifierFacade
+    - feature: str
 }
 
 class TrainModelCommand {
+    - email_classifier: EmailClassifierFacade
+    - path: str
 }
 
 class DisplayEvaluationCommand {
+    - email_classifier: EmailClassifierFacade
 }
 
 class EmailClassifierFacade {
+    + train_model(path: str): void
+    + classify_email(): void
+    + add_emails(path: str): void
+    + change_strategy(strategy: str): void
+    + display_evaluation(): void
+}
+
+class ClassifierConfigSingleton {
+    - data_folder_path: str
 }
 
 Client o-- "1..*" EmailClassifierFacade : manages
@@ -58,8 +70,9 @@ Command <|-- ChangeStrategyCommand
 Command <|-- AddPreprocessingCommand
 Command <|-- TrainModelCommand
 Command <|-- DisplayEvaluationCommand
+Client o-left- ClassifierConfigSingleton : uses
 
-Command --> EmailClassifierFacade :executes
-Client --> Command :creates 
+Command --> EmailClassifierFacade : executes
+Client --> Command : creates 
 
 @enduml

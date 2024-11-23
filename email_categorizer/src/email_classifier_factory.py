@@ -1,10 +1,10 @@
-from modeling.context import ContextClassifier
-from email_classifier_facade import EmailClassifierFacade
-from data_preparation.data_processor import DataProcessor
-from modeling.model_factory import ModelFactory
-from feature_engineering.embeddings_factory import EmbeddingsFactory
+from src.modeling.context import ContextClassifier
+from src.email_classifier_facade import EmailClassifierFacade
+from src.data_preparation.data_processor import DataProcessor
+from src.modeling.model_factory import ModelFactory
+from src.feature_engineering.embeddings_factory import EmbeddingsFactory
 import pandas as pd
-from modeling.training_data import TrainingData
+from src.modeling.training_data import TrainingData
 from observation.statistics_collector import StatCollector
 from observation.result_displayer import ResultDisplayer
 

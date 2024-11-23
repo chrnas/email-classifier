@@ -1,5 +1,5 @@
-from cli import Cli
-from client import Client
+from src.cli import Cli
+from src.client import Client
 
 
 if __name__ == '__main__':

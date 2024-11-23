@@ -6,7 +6,6 @@ class ConfigSingleton {
     - preprocessing_features : list
     - embeddings : list
     - models : list
-    - default_classifier_config : dict
     - data_folder_path : str
     - ticket_summary : str
     - interaction_content : str

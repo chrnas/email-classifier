@@ -1,0 +1,33 @@
+@startuml
+!theme mono
+
+class Cli {
+    - client: Client
+    - config_manager: ClassifierConfigSingleton
+    + __init__(client: Client)
+    + create_parser() : argparse.ArgumentParser
+    + create_completer() : NestedCompleter
+    + run()
+}
+
+class Client {
+    - email_classifiers: List<EmailClassifier>
+    + handle_input(args: Namespace)
+}
+
+class ClassifierConfigSingleton {
+    - _instance : ClassifierConfigSingleton
+    - preprocessing_features : list
+    - embeddings : list
+    - models : list
+    - data_folder_path : str
+    - ticket_summary : str
+    - interaction_content : str
+    - classification_column : str
+    - type_columns : list
+    - type_columns_names : list
+}
+Cli "1" --> "1" Client : uses
+Cli "1" --> "1" ClassifierConfigSingleton : uses
+
+@enduml

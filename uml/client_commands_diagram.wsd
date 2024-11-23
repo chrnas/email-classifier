@@ -1,18 +1,12 @@
 @startuml
 !theme mono
 
-
 class Client  {
     - email_classifiers: list[EmailClassifierFacade]
-    - data_set_loader: DatasetLoader
-    - command_executor: CommandInvoker
-    + __init__()
-    + print_startup(): void
-    + create_parser(): argparse.ArgumentParser
-    + create_completer(): NestedCompleter
-    + run_cli(): void
-    + handle_command(args): bool
+    - command_invoker: CommandInvoker
     - config_manager: ClassifierConfigSingleton
+    + __init__()
+    + handle_input(args): bool
 }
 
 class CommandInvoker {
@@ -22,8 +16,7 @@ class CommandInvoker {
     + undo(): void
 }
 
-
-class Command {
+abstract class Command {
     + execute(): void
     + undo(): void
 }
@@ -32,29 +25,49 @@ class EmailClassifierFactory {
     + create_email_classifier(): EmailClassifierFacade
 }
 
+class EmailClassifierFacade {
+    + train_model(path: str): void
+    + classify_email(): void
+    + add_emails(path: str): void
+    + change_strategy(strategy: str): void
+    + display_evaluation(): void
+}
+
 class ListEmailClassifiersCommand {
+    - email_classifiers: list[EmailClassifierFacade]
 }
 
 class ChooseEmailClassifierCommand {
+    - email_classifiers: list[EmailClassifierFacade]
+    - name: str
 }
 
-class EmailClassifierFacade {
+class CreateEmailClassifierCommand {
+    - email_classifiers: list[EmailClassifierFacade]
+    - path: str
+    - embedding: str
+    - model: str
+    - name: str
+}
+
+class RemoveEmailClassifierCommand {
+    - email_classifiers: list[EmailClassifierFacade]
+    - name: str
 }
 
 Client o-- "1..*" EmailClassifierFacade : manages
 Client o-- CommandInvoker
-CommandInvoker --> Command : invokes
+CommandInvoker o-- "1" Command : sets and invokes
 
 Command <|-- ListEmailClassifiersCommand
 Command <|-- ChooseEmailClassifierCommand
 Command <|-- CreateEmailClassifierCommand
+Command <|-- RemoveEmailClassifierCommand
 
-Client --> Command: executes
-Command --> Client : creates
+Client --> Command: creates and invokes
+Command --> "1..*" EmailClassifierFacade : operates on
 
 CreateEmailClassifierCommand --> EmailClassifierFactory : uses
 EmailClassifierFactory ..> EmailClassifierFacade : creates
-
-
 
 @enduml

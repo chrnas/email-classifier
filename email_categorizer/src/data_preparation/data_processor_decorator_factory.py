@@ -1,4 +1,4 @@
-from .data_processor import (
+from src.data_preparation.data_processor import (
     NoiseRemovalDecorator,
     TranslatorDecorator,
     UnicodeConversionDecorator,

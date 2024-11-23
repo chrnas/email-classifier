@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
 import pandas as pd
 import stanza
+from tqdm import tqdm
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-from tqdm import tqdm
-from classifier_config_singleton import ClassifierConfigSingleton
+from src.classifier_config_singleton import ClassifierConfigSingleton
 
 
 class DataProcessorBase(ABC):
