@@ -170,8 +170,8 @@ class ChangeStrategyCommand(Command):
         print("Model changed to", self.model_type)
 
     def undo(self):
-        print("Undoing the previous change strategy command.")
         self.email_classifier.model_context.choose_strat(self.old_model)
+        print("Undoing the previous change strategy command.")
 
 
 class AddPreprocessingCommand(Command):
