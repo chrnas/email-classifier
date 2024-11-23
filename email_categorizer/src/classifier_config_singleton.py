@@ -4,6 +4,7 @@ class ClassifierConfigSingleton(object):
     _instance = None
 
     def __new__(cls):
+        """Singleton instance creation."""
         if cls._instance is None:
             cls._instance = super(ClassifierConfigSingleton, cls).__new__(cls)
 

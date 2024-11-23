@@ -1,4 +1,4 @@
-from data_preparation.data_preprocessor_decorator_factory import DataProcessorDecoratorFactory
+from data_preparation.data_processor_decorator_factory import DataProcessorDecoratorFactory
 from feature_engineering.base_embeddings import BaseEmbeddings
 from modeling.context import ContextClassifier
 from data_preparation.dataset_loader import DatasetLoader

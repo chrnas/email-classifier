@@ -1,7 +1,8 @@
 from .observer import Observer
 
+
 class ResultDisplayer(Observer):
-    
+
     def __init__(self):
         self.predictions = []
 
