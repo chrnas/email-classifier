@@ -1,4 +1,4 @@
-@startuml Sequence Diagram for ClassifyEmailCommand
+@startuml classify_emails
 !theme mono
 
 actor Client
