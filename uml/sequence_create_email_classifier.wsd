@@ -1,4 +1,6 @@
-@startuml
+@startuml create_email_classifier
+!theme mono
+
 actor Client
 participant "CreateEmailClassifierCommand" as Command
 participant "EmailClassifierFactory" as Factory
@@ -11,7 +13,7 @@ participant "ModelFactory" as ModelFactory
 participant "ContextClassifier" as ContextClassifier
 participant "StatCollector" as StatCollector
 
-Client -> Command : handle_input(path, embedding, model, name)
+Client -> Command : execute(path, embedding, model, name)
 Command -> Loader : read_data(path)
 Loader --> Command : Return df
 Command -> Loader : renameColumns(df)
@@ -34,5 +36,4 @@ Factory -> ContextClassifier : classification_report()
 ContextClassifier -> ContextClassifier : notify(event_type, report)
 ContextClassifier -> StatCollector : update(event_type, report)
 Factory --> Command: Return EmailClassifierFacade
-Command -> Command : insert(0, EmailClassifierFacade)
 @enduml 

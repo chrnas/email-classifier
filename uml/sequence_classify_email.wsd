@@ -1,0 +1,25 @@
+@startuml Sequence Diagram for ClassifyEmailCommand
+!theme mono
+
+actor Client
+participant "ClassifyEmailCommand" as Command
+participant "EmailClassifierFacade" as EmailClassifier
+participant "DataProcessor" as DataProcessor
+participant "BaseEmbeddings" as BaseEmbeddings
+participant "ContextClassifier" as ContextClassifier
+participant "BaseModel" as BaseModel
+participant "ResultDisplayer" as ResultDisplayer
+
+Client -> Command : execute()
+Command -> EmailClassifier : classify_emails()
+EmailClassifier -> DataProcessor : process(emails)
+DataProcessor --> EmailClassifier : Return df
+EmailClassifier -> BaseEmbeddings : create_classification_embeddings(df)
+BaseEmbeddings --> EmailClassifier : Return X
+EmailClassifier -> ContextClassifier : predict_emails(X, df)
+ContextClassifier -> BaseModel : predict_emails(X, df)
+BaseModel --> ContextClassifier : Return predictions
+ContextClassifier -> ContextClassifier : notify(event_type, predictions)
+ContextClassifier -> ResultDisplayer : update(event_type, predictions)
+
+@enduml
