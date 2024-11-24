@@ -4,7 +4,7 @@ import stanza
 from tqdm import tqdm
 from stanza.pipeline.core import DownloadMethod
 from transformers import M2M100ForConditionalGeneration, M2M100Tokenizer
-from src.classifier_config_singleton import ClassifierConfigSingleton
+from classifier_config_singleton import ClassifierConfigSingleton
 
 
 class DataProcessorBase(ABC):

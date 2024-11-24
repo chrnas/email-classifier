@@ -4,7 +4,7 @@ from modeling.context import ContextClassifier
 from data_preparation.dataset_loader import DatasetLoader
 import pandas as pd
 from modeling.context import ContextClassifier
-from src.data_preparation.data_processor import DataProcessor
+from data_preparation.data_processor import DataProcessor
 from modeling.training_data import TrainingData
 from modeling.model_factory import ModelFactory
 
