@@ -16,16 +16,4 @@ class StatCollector(Observer):
 
     def display(self):
         """Displays the collected statistics."""
-        print("\n")
-        for email_class, met in self.statistics.items():
-            if email_class not in ["accuracy", "macro avg", "weighted avg"]:
-                print(f"Email Type: {email_class}")
-                print(f"Precision: {met['precision']}")
-                print(f"Recall: {met['recall']}")
-                print(f"F1-Score: {met['f1-score']}")
-                print(f"Support: {met['support']}")
-                print("\n")
-            elif email_class == "accuracy":
-                print("Overall Metrics:")
-                print(f"Accuracy: {met:.3f}")
-                print("\n")
+        print(self.statistics)
