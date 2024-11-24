@@ -63,7 +63,7 @@ class ClassifierConfigSingleton {
 
 Client o-- "1..*" EmailClassifierFacade : manages
 Client o-- CommandInvoker
-CommandInvoker o-- "1" Command : manages
+CommandInvoker o-- "1" Command : sets and invokes
 Command <|-- AddEmailsCommand
 Command <|-- ClassifyEmailCommand
 Command <|-- ChangeStrategyCommand
@@ -72,7 +72,7 @@ Command <|-- TrainModelCommand
 Command <|-- DisplayEvaluationCommand
 Client o-left- ClassifierConfigSingleton : uses
 
-Command --> EmailClassifierFacade : executes
+Command --> EmailClassifierFacade : operates on
 Client --> Command : creates 
 
 @enduml

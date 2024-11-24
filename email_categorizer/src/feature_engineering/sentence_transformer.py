@@ -5,10 +5,10 @@ from .base_embeddings import BaseEmbeddings
 
 
 class SentenceTransformerEmbeddings(BaseEmbeddings):
-    
+
     def __str__(self) -> str:
         return "sentence_transformer"
-    
+
     def create_training_embeddings(self, df: pd.DataFrame):
         """Converts text data from "Interaction content" and "Ticket Summary" columns into SentenceTransformer embeddings, then concatenates them into a single feature matrix."""
         model = SentenceTransformer('all-MiniLM-L6-v2')

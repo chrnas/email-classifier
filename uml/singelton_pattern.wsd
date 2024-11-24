@@ -1,7 +1,7 @@
 @startuml
 !theme mono
 
-class ConfigSingleton {
+class ClassifierConfigSingleton {
     - _instance : ClassifierConfigSingleton
     - preprocessing_features : list
     - embeddings : list
@@ -21,7 +21,7 @@ class Client {
     - config_manager: ClassifierConfigSingleton
 }
 
-Client o-- ConfigSingleton 
-ConfigSingleton  --> "1" ConfigSingleton  : <<Singleton>>
+Client o-- ClassifierConfigSingleton 
+ClassifierConfigSingleton  --> "1" ClassifierConfigSingleton  : <<Singleton>>
 
 @enduml

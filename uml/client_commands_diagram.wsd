@@ -64,7 +64,7 @@ Command <|-- ChooseEmailClassifierCommand
 Command <|-- CreateEmailClassifierCommand
 Command <|-- RemoveEmailClassifierCommand
 
-Client --> Command: creates and invokes
+Client --> Command: creates
 Command --> "1..*" EmailClassifierFacade : operates on
 
 CreateEmailClassifierCommand --> EmailClassifierFactory : uses

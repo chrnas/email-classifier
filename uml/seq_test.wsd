@@ -1,0 +1,20 @@
+@startuml add_emails
+!theme mono
+
+actor Client
+participant "CommandInvoker" as invoker
+participant "AddEmailsCommand" as Command
+participant "EmailClassifierFacade" as EmailClassifier
+participant "DatasetLoader" as Loader
+
+Client -> Command: create AddEmailCommand(email_classifier, path)
+Client -> invoker: setCommand(command)
+Client -> invoker: executeCommand()
+invoker -> Command: execute()
+Command -> EmailClassifier : add_emails(path)
+EmailClassifier -> Loader : read_data(path)
+Loader --> EmailClassifier : Return df
+EmailClassifier -> Loader : renameColumns(df)
+Loader --> EmailClassifier : Return df
+
+@enduml
